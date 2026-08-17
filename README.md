@@ -1,32 +1,51 @@
-# ReVanced Troubleshooting & Recovery Manual — v3.0.1 Interactive
+# ReVanced Troubleshooting & Recovery Manual — v3.1.0 Interactive
 
 Manual técnico **não oficial e web-only** para diagnóstico de ReVanced Manager, APKs patched, patches, GmsCore e problemas de reprodução.
 
 ## Funcionalidades
 
-- diagnóstico guiado por sintoma;
-- pesquisa instantânea nos 35 capítulos;
-- capítulos expansíveis e deep-links;
-- checklists com progresso guardado localmente;
+- diagnóstico guiado por sintoma com deep-links;
+- pesquisa por relevância, multi-palavra e tolerante a acentos;
+- 35 capítulos expansíveis e navegação móvel por drawer;
+- progresso global, “Continuar onde fiquei” e capítulos revistos;
+- exportação/importação segura do progresso local em JSON;
 - caso validado 0:55–1:00 com screenshots;
-- comandos ADB/apksigner copiáveis;
-- modo claro/escuro;
-- impressão pelo navegador, se o utilizador quiser;
-- PWA/offline quando publicado por HTTPS;
+- comandos ADB/apksigner adaptados a PowerShell, CMD e Linux/macOS;
+- modo claro/escuro e suporte a `prefers-reduced-motion`;
+- tabs acessíveis por teclado e foco visível;
+- impressão pelo navegador;
+- PWA instalável com ícones, shortcuts e atualização controlada;
+- funcionamento offline com Service Worker versionado.
 
 ## Publicar no GitHub Pages
 
-1. Cria um repositório e coloca estes ficheiros na raiz.
+1. Coloca estes ficheiros na raiz do repositório.
 2. Faz commit/push.
 3. Em **Settings → Pages**, escolhe **Deploy from a branch**.
 4. Seleciona a branch principal e a pasta **/(root)**.
-5. Guarda. O site passa a ser servido pelo GitHub Pages.
+5. Guarda.
 
-Também pode ser aberto localmente através de `index.html`. O Service Worker/PWA só funciona quando servido por HTTP/HTTPS.
+O site é uma aplicação web estática. Pode abrir localmente via `index.html`, mas Service Worker/PWA exigem HTTP/HTTPS.
+
+## Desenvolvimento seguro
+
+A v3.1.0 mantém `assets/manual-data.js` como fonte de conteúdo e separa comportamento/UI do conteúdo. Conteúdo dinâmico é escapado antes de entrar no DOM e links externos são restringidos a HTTPS/origem local.
+
+Para validação antes de publicar:
+
+```powershell
+git diff --check
+node --check .\assets\app.js
+node --check .\sw.js
+```
+
+O pacote de atualização inclui `TESTAR_V3_1_0.ps1` para automatizar checks estáticos.
 
 ## Segurança
 
-Usa apenas fontes ReVanced oficiais. O projeto ReVanced indica `revanced.app` como site oficial e publica um aviso específico sobre sites falsos. Este repositório não deve distribuir APKs YouTube pré-patched.
+Usa apenas fontes ReVanced oficiais. O projeto ReVanced indica `revanced.app` como site oficial e publica avisos sobre sites falsos. Este repositório não deve distribuir APKs YouTube pré-patched.
+
+Nunca sacrifiques Play Protect, 2FA, verificação de assinatura/versão ou outras proteções como “primeira correção”. Preserva logs e keystore antes de ações destrutivas.
 
 ## Licença e atribuição
 
@@ -34,14 +53,17 @@ Esta edição técnica é independente e inclui referências para documentação
 
 ReVanced, YouTube, Android e restantes marcas pertencem aos respetivos titulares.
 
-
 ## Formato do projeto
 
 Este repositório é uma aplicação web estática. **Não inclui PDF** e não depende de PDF para funcionar.
-O conteúdo é servido diretamente por `index.html`, JavaScript, CSS e dados locais.
 
+## v3.1.0 — UX, PWA, acessibilidade e manutenção
 
-## v3.0.1 — atualização de dados (16/08/2026)
-
-Foi adicionada a área **Relatórios atuais**, com triagem de issues recentes do repositório oficial ReVanced Manager.  
-Os relatos são classificados por estado, força da evidência e nível de confirmação. Workarounds comunitários não são tratados como fixes oficiais.
+- menu móvel real;
+- pesquisa avançada;
+- progresso global + export/import;
+- comandos por terminal;
+- PWA instalável e atualização offline controlada;
+- acessibilidade de tabs/foco/reduced-motion;
+- hardening de links dinâmicos e storage;
+- correção do comando de pesquisa de packages para PowerShell/CMD.

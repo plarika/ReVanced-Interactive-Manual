@@ -5,48 +5,80 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Manual interativo não oficial de troubleshooting e recovery para ReVanced Manager, patches, APKs, GmsCore e YouTube.">
   <meta name="theme-color" content="#0b0f14">
-  <title>ReVanced Troubleshooting & Recovery Manual v3.0.1 Interactive</title>
+  <meta name="color-scheme" content="dark light">
+  <title>ReVanced Troubleshooting & Recovery Manual v3.1.0 Interactive</title>
   <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png" sizes="192x192" type="image/png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+  <a class="skip-link" href="#mainContent">Saltar para o conteúdo</a>
+
   <header class="topbar">
     <div class="topbar-inner">
       <div class="brand">
+        <button id="mobileMenuToggle" class="icon-btn mobile-only" type="button"
+                aria-label="Abrir índice" aria-controls="sidebar" aria-expanded="false">☰</button>
         <div class="logo" aria-hidden="true">R</div>
-        <div>
-          <h1>ReVanced Troubleshooting & Recovery</h1>
-          <small>v3.0.1 Interactive · edição técnica independente</small>
+        <div class="brand-text">
+          <h1>ReVanced Troubleshooting &amp; Recovery</h1>
+          <small>v3.1.0 Interactive · edição técnica independente</small>
         </div>
       </div>
       <div class="actions">
-        <button id="themeToggle" class="btn" type="button"><span class="label">Tema</span> ◐</button>
+        <button id="installApp" class="btn hidden" type="button">Instalar app</button>
+        <button id="themeToggle" class="btn" type="button" aria-label="Alternar tema"><span class="label">Tema</span> ◐</button>
         <button id="printManual" class="btn" type="button"><span class="label">Imprimir / PDF</span> ⎙</button>
       </div>
     </div>
   </header>
 
+  <div id="navBackdrop" class="nav-backdrop hidden" aria-hidden="true"></div>
+
   <div class="layout">
-    <aside class="sidebar" aria-label="Índice">
+    <aside id="sidebar" class="sidebar" aria-label="Índice">
+      <div class="sidebar-head mobile-only">
+        <strong>Índice</strong>
+        <button id="mobileMenuClose" class="icon-btn" type="button" aria-label="Fechar índice">✕</button>
+      </div>
+
       <h2>Navegação</h2>
       <button class="navbtn sidebar-view" data-target="wizard" type="button">Diagnóstico guiado</button>
+      <button class="navbtn sidebar-view" data-target="reports" type="button">Relatórios atuais</button>
       <button class="navbtn sidebar-view" data-target="case" type="button">Caso 0:55–1:00</button>
+      <button class="navbtn sidebar-view" data-target="advanced" type="button">Diagnóstico avançado</button>
+
       <h2>Capítulos</h2>
-      <nav id="chapterNav"></nav>
+      <nav id="chapterNav" aria-label="Capítulos do manual"></nav>
     </aside>
 
-    <main class="main">
-      <section class="hero">
+    <main id="mainContent" class="main" tabindex="-1">
+      <section class="hero" aria-labelledby="heroTitle">
         <div class="panel">
           <div class="kicker">Troubleshooting interativo</div>
-          <h2>Do sintoma à causa provável, sem alterar tudo ao mesmo tempo.</h2>
-          <p class="muted">Versão web/offline do manual técnico A-Z. Pesquisa instantânea, diagnóstico guiado, capítulos expansíveis, checklists persistentes, comandos copiáveis e caso real validado.</p>
+          <h2 id="heroTitle">Do sintoma à causa provável, sem alterar tudo ao mesmo tempo.</h2>
+          <p class="muted">Versão web/offline do manual técnico A-Z. Pesquisa por relevância, diagnóstico guiado, capítulos expansíveis, progresso persistente, comandos por sistema operativo e caso real validado.</p>
+
           <div class="stats">
-            <div class="stat"><strong>35</strong><span class="muted">capítulos</span></div>
-            <div class="stat"><strong>10</strong><span class="muted">runbooks guiados</span></div>
+            <div class="stat"><strong id="chapterCount">—</strong><span class="muted">capítulos</span></div>
+            <div class="stat"><strong id="runbookCount">—</strong><span class="muted">runbooks guiados</span></div>
             <div class="stat"><strong id="reviewedCount">0</strong><span class="muted">capítulos revistos</span></div>
+            <div class="stat"><strong id="globalProgressText">0%</strong><span class="muted">progresso global</span></div>
+          </div>
+
+          <div class="progress progress-large" aria-label="Progresso global">
+            <div id="globalProgressBar"></div>
+          </div>
+
+          <div class="hero-actions">
+            <button id="continueReading" class="btn primary hidden" type="button">Continuar onde fiquei</button>
+            <button id="exportProgress" class="btn" type="button">Exportar progresso</button>
+            <button id="importProgress" class="btn" type="button">Importar progresso</button>
+            <input id="importProgressFile" class="hidden" type="file" accept="application/json,.json">
           </div>
         </div>
+
         <div class="panel">
           <div class="kicker">Segurança</div>
           <h3>Cadeia de confiança primeiro</h3>
@@ -57,28 +89,27 @@
       </section>
 
       <div class="tabs" role="tablist" aria-label="Áreas do manual">
-        <button class="tab active" data-view="wizard" type="button">Diagnóstico guiado</button>
-        <button class="tab" data-view="reports" type="button">Relatórios atuais</button>
-        <button class="tab" data-view="manual" type="button">Manual A-Z</button>
-        <button class="tab" data-view="case" type="button">Caso validado 0:55</button>
-        <button class="tab" data-view="advanced" type="button">Diagnóstico avançado</button>
-        <button class="tab" data-view="sources" type="button">Fontes</button>
+        <button id="tab-wizard" class="tab active" role="tab" aria-selected="true" aria-controls="view-wizard" data-view="wizard" type="button">Diagnóstico guiado</button>
+        <button id="tab-reports" class="tab" role="tab" aria-selected="false" aria-controls="view-reports" data-view="reports" type="button">Relatórios atuais</button>
+        <button id="tab-manual" class="tab" role="tab" aria-selected="false" aria-controls="view-manual" data-view="manual" type="button">Manual A-Z</button>
+        <button id="tab-case" class="tab" role="tab" aria-selected="false" aria-controls="view-case" data-view="case" type="button">Caso validado 0:55</button>
+        <button id="tab-advanced" class="tab" role="tab" aria-selected="false" aria-controls="view-advanced" data-view="advanced" type="button">Diagnóstico avançado</button>
+        <button id="tab-sources" class="tab" role="tab" aria-selected="false" aria-controls="view-sources" data-view="sources" type="button">Fontes</button>
       </div>
 
-      <section id="view-wizard" class="view active">
+      <section id="view-wizard" class="view active" role="tabpanel" aria-labelledby="tab-wizard">
         <div class="panel">
           <div class="kicker">Escolhe o sintoma</div>
           <h2>Diagnóstico guiado</h2>
-          <p class="muted">O objetivo é localizar a fase da falha antes de tentar corrigir.</p>
+          <p class="muted">Localiza primeiro a fase da falha. Depois altera uma única variável e regista o resultado.</p>
         </div>
         <div id="diagRoot" class="grid" style="margin-top:14px"></div>
         <div id="diagResult"></div>
       </section>
 
-
-      <section id="view-reports" class="view">
+      <section id="view-reports" class="view" role="tabpanel" aria-labelledby="tab-reports" hidden>
         <div class="panel">
-          <div class="kicker">Última verificação: 16/08/2026 19:18 · Europe/Lisbon</div>
+          <div class="kicker">Última verificação dos dados: 16/08/2026 19:18 · Europe/Lisbon</div>
           <h2>Erros recentemente relatados</h2>
           <p class="muted">Esta área separa relatos abertos, workarounds comunitários e evidência técnica. Uma issue aberta não é automaticamente uma falha confirmada do ReVanced.</p>
           <div class="callout warn"><strong>Política:</strong> nenhum relato é promovido a “fix oficial” sem documentação, release, commit ou confirmação upstream adequada.</div>
@@ -86,27 +117,30 @@
         </div>
       </section>
 
-      <section id="view-manual" class="view">
+      <section id="view-manual" class="view" role="tabpanel" aria-labelledby="tab-manual" hidden>
         <div class="panel search-tools">
           <div class="searchbox">
             <label for="search"><strong>Pesquisar no manual</strong></label>
-            <input id="search" type="search" placeholder="Ex.: Custom branding, OOM, GmsCore, 0:55, assinatura, DNS…">
+            <input id="search" type="search" autocomplete="off"
+                   placeholder="Ex.: Custom branding, OOM, GmsCore, 0:55, assinatura, DNS…"
+                   aria-describedby="searchHelp searchCount">
+            <small id="searchHelp" class="muted">Aceita várias palavras e ignora acentos. Os capítulos mais relevantes aparecem primeiro.</small>
           </div>
-          <div class="quickchips">
+          <div class="quickchips" aria-label="Pesquisas rápidas">
             <button class="chip quick-search" data-q="custom branding" type="button">Custom branding</button>
             <button class="chip quick-search" data-q="out of memory" type="button">OOM</button>
             <button class="chip quick-search" data-q="gmscore" type="button">GmsCore</button>
             <button class="chip quick-search" data-q="0:55" type="button">0:55–1:00</button>
             <button class="chip quick-search" data-q="assinatura" type="button">Assinatura</button>
-            <button class="chip quick-search" data-q="dns" type="button">DNS/VPN</button>
+            <button class="chip quick-search" data-q="dns vpn" type="button">DNS/VPN</button>
           </div>
-          <p class="muted" id="searchCount">Todos os capítulos</p>
+          <p class="muted" id="searchCount" aria-live="polite">Todos os capítulos</p>
         </div>
         <div id="emptySearch" class="empty hidden">Nenhum capítulo corresponde à pesquisa.</div>
         <div id="chaptersRoot" style="margin-top:14px"></div>
       </section>
 
-      <section id="view-case" class="view">
+      <section id="view-case" class="view" role="tabpanel" aria-labelledby="tab-case" hidden>
         <div class="panel">
           <div class="kicker">CASO VALIDADO · não universal</div>
           <h2>YouTube parava a 0:55–1:00</h2>
@@ -115,38 +149,52 @@
         </div>
 
         <div class="case-layout" style="margin-top:14px">
-          <figure><img src="screenshots/01-diversos.jpg" alt="Definições ReVanced, página Diversos"><figcaption>1. Abrir Diversos → Falsificar fluxos de vídeo.</figcaption></figure>
-          <figure><img src="screenshots/02-spoof-video-streams.jpg" alt="Página Falsificar fluxos de vídeo com Android Reel no auth"><figcaption>2. O cliente atual era Android Reel (no auth); o ecrã avisava sobre paragem em 1:00.</figcaption></figure>
-          <figure><img src="screenshots/03-clientes-spoof.jpg" alt="Lista de clientes Spoof incluindo visionOS"><figcaption>3. Foi escolhido visionOS e repetido o mesmo teste.</figcaption></figure>
+          <figure><img src="screenshots/01-diversos.jpg" alt="Definições ReVanced, página Diversos" loading="lazy"><figcaption>1. Abrir Diversos → Falsificar fluxos de vídeo.</figcaption></figure>
+          <figure><img src="screenshots/02-spoof-video-streams.jpg" alt="Página Falsificar fluxos de vídeo com Android Reel no auth" loading="lazy"><figcaption>2. O cliente atual era Android Reel (no auth); o ecrã avisava sobre paragem em 1:00.</figcaption></figure>
+          <figure><img src="screenshots/03-clientes-spoof.jpg" alt="Lista de clientes Spoof incluindo visionOS" loading="lazy"><figcaption>3. Foi escolhido visionOS e repetido o mesmo teste.</figcaption></figure>
         </div>
 
         <div class="panel" style="margin-top:14px">
           <h3>Runbook reproduzível</h3>
-          <div class="progress"><div id="caseProgressBar"></div></div>
+          <div class="progress" aria-label="Progresso do caso validado"><div id="caseProgressBar"></div></div>
           <p class="muted">Progresso: <span id="caseProgressText">0%</span></p>
           <div id="caseChecklist" class="checklist"></div>
         </div>
       </section>
 
-      <section id="view-advanced" class="view">
-        <div class="grid">
+      <section id="view-advanced" class="view" role="tabpanel" aria-labelledby="tab-advanced" hidden>
+        <div class="panel os-panel">
+          <div>
+            <div class="kicker">Comandos adaptados</div>
+            <h2>Escolhe o teu terminal</h2>
+          </div>
+          <label for="osSelect">
+            <span class="sr-only">Sistema operativo/terminal</span>
+            <select id="osSelect" class="select">
+              <option value="powershell">Windows PowerShell</option>
+              <option value="cmd">Windows CMD</option>
+              <option value="unix">Linux / macOS</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="grid" style="margin-top:14px">
           <div class="panel">
             <div class="kicker">ADB</div>
             <h3>Capturar logcat</h3>
-            <pre class="code">adb logcat -c
-adb logcat -v time &gt; revanced-log.txt</pre>
+            <pre id="command-logcat" class="code" tabindex="0"></pre>
             <button class="btn copybtn" data-copy-command="logcat" type="button">Copiar comando</button>
           </div>
           <div class="panel">
             <div class="kicker">Android SDK</div>
             <h3>Verificar certificado APK</h3>
-            <pre class="code">apksigner verify --print-certs app-patched.apk</pre>
+            <pre id="command-certs" class="code" tabindex="0"></pre>
             <button class="btn copybtn" data-copy-command="certs" type="button">Copiar comando</button>
           </div>
           <div class="panel">
             <div class="kicker">Package Manager</div>
             <h3>Localizar packages YouTube</h3>
-            <pre class="code">adb shell pm list packages | grep -i youtube</pre>
+            <pre id="command-packages" class="code" tabindex="0"></pre>
             <button class="btn copybtn" data-copy-command="packages" type="button">Copiar comando</button>
           </div>
           <div class="panel">
@@ -157,7 +205,7 @@ adb logcat -v time &gt; revanced-log.txt</pre>
         </div>
       </section>
 
-      <section id="view-sources" class="view">
+      <section id="view-sources" class="view" role="tabpanel" aria-labelledby="tab-sources" hidden>
         <div class="panel">
           <div class="kicker">Official-first</div>
           <h2>Fontes e cadeia de confiança</h2>
@@ -168,17 +216,19 @@ adb logcat -v time &gt; revanced-log.txt</pre>
       </section>
 
       <footer class="footer">
-        ReVanced Troubleshooting & Recovery Manual v3.0.1 Interactive · revisão 16/08/2026 · edição técnica independente.
+        ReVanced Troubleshooting &amp; Recovery Manual v3.1.0 Interactive · edição técnica independente.
       </footer>
     </main>
   </div>
 
+  <div id="updateToast" class="toast hidden" role="status" aria-live="polite">
+    <span>Existe uma nova versão offline disponível.</span>
+    <button id="reloadForUpdate" class="btn primary" type="button">Atualizar</button>
+  </div>
+
+  <div id="statusLive" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
   <script src="assets/manual-data.js"></script>
   <script src="assets/app.js"></script>
-  <script>
-    if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
-      navigator.serviceWorker.register('./sw.js').catch(()=>{});
-    }
-  </script>
 </body>
 </html>
