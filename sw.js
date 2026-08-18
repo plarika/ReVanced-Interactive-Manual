@@ -1,6 +1,81 @@
-const CACHE='revanced-manual-v3.0.1';
-const ASSETS=['./','./index.html','./assets/style.css','./assets/app.js','./assets/manual-data.js','./manifest.webmanifest',
-'./screenshots/01-diversos.jpg','./screenshots/02-spoof-video-streams.jpg','./screenshots/03-clientes-spoof.jpg'];
-self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS))));
-self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))))));
-self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));
+const CACHE_VERSION = 'revanced-manual-v3.1.0-public-ui-r11';
+const CORE_CACHE = `${CACHE_VERSION}-core`;
+const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
+
+const CORE_ASSETS = [
+  './',
+  './index.html',
+  './assets/style.css',
+  './assets/app.js',
+  './assets/manual-data.js',
+  './manifest.webmanifest',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './icons/icon-maskable-512.png'
+];
+
+const OPTIONAL_ASSETS = [
+  './screenshots/01-diversos.jpg',
+  './screenshots/02-spoof-video-streams.jpg',
+  './screenshots/03-clientes-spoof.jpg'
+];
+
+self.addEventListener('install', (event) => {
+  event.waitUntil((async () => {
+    const cache = await caches.open(CORE_CACHE);
+    await cache.addAll(CORE_ASSETS);
+    await Promise.allSettled(OPTIONAL_ASSETS.map((asset) => cache.add(asset)));
+  })());
+});
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil((async () => {
+    const valid = new Set([CORE_CACHE, RUNTIME_CACHE]);
+    const keys = await caches.keys();
+    await Promise.all(keys.filter((key) => !valid.has(key)).map((key) => caches.delete(key)));
+    await self.clients.claim();
+  })());
+});
+
+self.addEventListener('message', (event) => {
+  if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();
+});
+
+async function networkFirst(request) {
+  const cache = await caches.open(RUNTIME_CACHE);
+  try {
+    const response = await fetch(request);
+    if (response.ok) await cache.put(request, response.clone());
+    return response;
+  } catch {
+    return (await cache.match(request)) || (await caches.match('./index.html'));
+  }
+}
+
+async function staleWhileRevalidate(request) {
+  const cache = await caches.open(RUNTIME_CACHE);
+  const cached = await caches.match(request);
+  const network = fetch(request).then(async (response) => {
+    if (response.ok) await cache.put(request, response.clone());
+    return response;
+  }).catch(() => null);
+  return cached || (await network) || Response.error();
+}
+
+self.addEventListener('fetch', (event) => {
+  const request = event.request;
+  if (request.method !== 'GET') return;
+
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin) return;
+
+  if (request.mode === 'navigate') {
+    event.respondWith(networkFirst(request));
+    return;
+  }
+
+  const cacheableDestinations = new Set(['style', 'script', 'image', 'manifest', 'font']);
+  if (cacheableDestinations.has(request.destination) || url.pathname.endsWith('.webmanifest')) {
+    event.respondWith(staleWhileRevalidate(request));
+  }
+});

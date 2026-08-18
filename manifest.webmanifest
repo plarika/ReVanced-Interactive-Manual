@@ -1,9 +1,68 @@
 {
+  "id": "./",
   "name": "ReVanced Troubleshooting & Recovery Manual",
   "short_name": "ReVanced Manual",
-  "start_url": "./",
+  "description": "Manual interativo de troubleshooting ReVanced, edição técnica independente.",
+  "lang": "pt-PT",
+  "start_url": "./#view-home",
+  "scope": "./",
   "display": "standalone",
+  "orientation": "any",
   "background_color": "#0b0f14",
   "theme_color": "#0b0f14",
-  "description": "Manual interativo de troubleshooting ReVanced, edição técnica independente."
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Diagnóstico guiado",
+      "short_name": "Diagnóstico",
+      "url": "./#view-wizard",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Manual A-Z",
+      "short_name": "Manual",
+      "url": "./#view-manual",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Diagnóstico avançado",
+      "short_name": "Avançado",
+      "url": "./#view-advanced",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
 }
