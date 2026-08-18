@@ -3,10 +3,10 @@ window.MANUAL_DATA = {
     "title": "ReVanced Troubleshooting & Recovery Manual",
     "version": "3.0.1 Interactive",
     "baseline": "2.0 PDF",
-    "reviewed": "2026-08-16 19:18 Europe/Lisbon",
+    "reviewed": "2026-08-18 23:32 Europe/Lisbon",
     "language": "pt-PT",
     "disclaimer": "Edição técnica independente, não afiliada ao projeto ReVanced, Google ou YouTube.",
-    "lastIssueCheck": "2026-08-16T19:18:00+01:00"
+    "lastIssueCheck": "2026-08-18T23:32:30+01:00"
   },
   "chapters": [
     {
@@ -498,6 +498,18 @@ window.MANUAL_DATA = {
     }
   ],
   "currentReports": [
+    {
+      "issue": 387,
+      "title": "Após reset, adicionar conta no GmsCore falhou; reinstalar o YouTube patched resolveu o caso do autor",
+      "state": "CLOSED",
+      "reported": "2026-08-18",
+      "classification": "RELATADO / WORKAROUND DO AUTOR",
+      "evidence": "Baixa",
+      "scope": "GmsCore / login após factory reset",
+      "summary": "Após um factory reset, um utilizador reportou que o GmsCore devolvia uma mensagem genérica ao adicionar a conta. A issue foi encerrada depois de o próprio autor indicar que reinstalar o YouTube ReVanced resolveu o seu caso. Não há logs, confirmação upstream nem evidência suficiente para tratar isto como correção universal.",
+      "action": "Se o sintoma coincidir, confirmar primeiro versões e instalação correta de GmsCore/YouTube. Uma reinstalação controlada do YouTube patched pode ser testada sem alterar identidade do dispositivo nem outras opções. Se resultar, tratar apenas como workaround local e registar versões/logs.",
+      "url": "https://github.com/ReVanced/GmsCore/issues/387"
+    },
     {
       "issue": 3500,
       "title": "YouTube Shorts: algumas pré-visualizações aparecem em ecrã inteiro",
