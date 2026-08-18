@@ -1,14 +1,14 @@
-const CACHE_VERSION = 'revanced-manual-v3.1.0-public-ui-r11';
+const CACHE_VERSION = 'revanced-manual-v3.1.0-public-ui-r12';
 const CORE_CACHE = `${CACHE_VERSION}-core`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
 const CORE_ASSETS = [
   './',
   './index.html',
-  './assets/style.css',
-  './assets/app.js',
-  './assets/manual-data.js',
-  './manifest.webmanifest',
+  './assets/style.css?v=3.1.0-r12',
+  './assets/app.js?v=3.1.0-r12',
+  './assets/manual-data.js?v=3.1.0-r12',
+  './manifest.webmanifest?v=3.1.0-r12',
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/icon-maskable-512.png'
@@ -48,7 +48,10 @@ async function networkFirst(request) {
     if (response.ok) await cache.put(request, response.clone());
     return response;
   } catch {
-    return (await cache.match(request)) || (await caches.match('./index.html'));
+    const cached = await caches.match(request);
+    if (cached) return cached;
+    if (request.mode === 'navigate') return (await caches.match('./index.html')) || Response.error();
+    return Response.error();
   }
 }
 
@@ -74,8 +77,14 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  const cacheableDestinations = new Set(['style', 'script', 'image', 'manifest', 'font']);
-  if (cacheableDestinations.has(request.destination) || url.pathname.endsWith('.webmanifest')) {
+  const consistencyCritical = new Set(['style', 'script', 'manifest']);
+  if (consistencyCritical.has(request.destination) || url.pathname.endsWith('.webmanifest')) {
+    event.respondWith(networkFirst(request));
+    return;
+  }
+
+  const cacheFriendly = new Set(['image', 'font']);
+  if (cacheFriendly.has(request.destination)) {
     event.respondWith(staleWhileRevalidate(request));
   }
 });
