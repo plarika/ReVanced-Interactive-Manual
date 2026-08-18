@@ -110,7 +110,7 @@
   setMobileMenu(false);
 
   // Tabs
-  const validViews = new Set(['wizard', 'reports', 'manual', 'case', 'advanced', 'sources']);
+  const validViews = new Set(['home', 'wizard', 'reports', 'manual', 'case', 'sources']);
 
   function setView(name, { updateHash = false, focus = false } = {}) {
     if (!validViews.has(name)) return;
@@ -131,7 +131,10 @@
   }
 
   const tabs = $$('.tab');
-  tabs.forEach((tab) => tab.addEventListener('click', () => setView(tab.dataset.view, { updateHash: true })));
+  tabs.forEach((tab) => tab.addEventListener('click', () => {
+    setView(tab.dataset.view, { updateHash: true });
+    if (tab.dataset.view === 'manual') openManualStart({ updateHash: true, scroll: false });
+  }));
   tabs.forEach((tab, index) => tab.addEventListener('keydown', (event) => {
     if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
     event.preventDefault();
@@ -142,10 +145,12 @@
     if (event.key === 'End') nextIndex = tabs.length - 1;
     const next = tabs[nextIndex];
     setView(next.dataset.view);
+    if (next.dataset.view === 'manual') openManualStart({ updateHash: true, scroll: false });
     next.focus();
   }));
   $$('.sidebar-view').forEach((button) => button.addEventListener('click', () => {
     setView(button.dataset.target, { updateHash: true });
+    if (button.dataset.target === 'manual') openManualStart({ updateHash: true, scroll: false });
   }));
 
   // Chapters + progress
@@ -161,87 +166,279 @@
   $('#chapterCount').textContent = String(D.chapters.length);
   $('#runbookCount').textContent = String(D.diagnostics.length);
 
-  const nav = $('#chapterNav');
-  const chaptersRoot = $('#chaptersRoot');
+  const manualIndex = $('#manualIndex');
+  const readerRoot = $('#readerRoot');
+  const printManualRoot = $('#printManualRoot');
 
-  function chapterHTML(ch) {
-    return `<details class="chapter" id="chapter-${ch.id}" data-id="${ch.id}" data-order="${ch.id}">
-      <summary><span class="badge">${ch.id}</span><span class="chapter-title">${esc(ch.title)}</span></summary>
-      <div class="chapter-body">
-        <div class="chapter-tools">
-          <button class="btn copy-link" data-id="${ch.id}" type="button">Copiar ligação</button>
-          <button class="btn mark-done" data-id="${ch.id}" type="button">Marcar revisto</button>
-        </div>
-        <div class="chapter-text">${esc(ch.text)}</div>
-      </div>
-    </details>`;
+  function manualColumns(rawLine) {
+    const clean = String(rawLine || '').trim();
+    return clean ? clean.split(/\s{2,}/).map((part) => part.trim()).filter(Boolean) : [];
   }
 
-  D.chapters.forEach((ch) => {
-    const button = document.createElement('button');
-    button.className = 'navbtn';
-    button.type = 'button';
-    button.textContent = `${ch.id}. ${ch.title}`;
-    button.dataset.chapter = ch.id;
-    button.addEventListener('click', () => openChapter(ch.id));
-    nav?.appendChild(button);
-  });
+  function manualColumnLayout(rawLine) {
+    const raw = String(rawLine || '').replace(/\s+$/, '');
+    const cells = manualColumns(raw);
+    const starts = [];
+    let cursor = 0;
+    cells.forEach((cell, index) => {
+      const found = raw.indexOf(cell, cursor);
+      starts.push(index === 0 ? 0 : Math.max(0, found));
+      cursor = Math.max(0, found) + cell.length;
+    });
+    return { cells, starts };
+  }
 
-  if (chaptersRoot) chaptersRoot.innerHTML = D.chapters.map(chapterHTML).join('');
+  function manualTableCells(blockLines, starts) {
+    const values = starts.map(() => []);
+    blockLines.forEach((line) => {
+      starts.forEach((start, index) => {
+        const end = index + 1 < starts.length ? starts[index + 1] : line.length;
+        const piece = line.slice(start, end).trim();
+        if (piece) values[index].push(piece);
+      });
+    });
+    return values.map((parts) => parts.join(' ').trim());
+  }
+
+  function renderManualDataRow(cells, isHeader = false) {
+    const normalized = cells.length > 3 ? [...cells.slice(0, 2), cells.slice(2).join(' ')] : cells;
+    const count = Math.min(normalized.length, 3);
+    return `<div class="manual-data-row manual-cols-${count}${isHeader ? ' is-header' : ''}">${normalized.map((cell) => `<span>${esc(cell)}</span>`).join('')}</div>`;
+  }
+
+  function renderChapterText(text) {
+    const lines = String(text ?? '').replace(/\r/g, '').split('\n');
+    const output = [];
+    let paragraph = [];
+    let tableStarts = null;
+
+    const flushParagraph = () => {
+      if (!paragraph.length) return;
+      output.push(`<p>${esc(paragraph.join(' '))}</p>`);
+      paragraph = [];
+    };
+    const nonEmptyLine = (start, step) => {
+      for (let i = start; i >= 0 && i < lines.length; i += step) {
+        if (lines[i].trim()) return lines[i];
+      }
+      return '';
+    };
+
+    for (let i = 0; i < lines.length; i += 1) {
+      const raw = lines[i].replace(/\s+$/, '');
+      const trimmed = raw.trim();
+      if (!trimmed) {
+        flushParagraph();
+        continue;
+      }
+
+      if (tableStarts) {
+        let end = i;
+        while (end + 1 < lines.length && lines[end + 1].trim()) end += 1;
+        const cells = manualTableCells(lines.slice(i, end + 1), tableStarts);
+        if (cells.filter(Boolean).length >= 2) {
+          flushParagraph();
+          output.push(renderManualDataRow(cells));
+          i = end;
+          continue;
+        }
+        tableStarts = null;
+      }
+
+      const subsection = trimmed.match(/^\d+\.\d+\s+.+/);
+      if (subsection) {
+        flushParagraph();
+        output.push(`<h4 class="manual-subhead">${esc(trimmed)}</h4>`);
+        continue;
+      }
+
+      const numbered = trimmed.match(/^(\d+)\.\s+(.+)$/);
+      if (numbered) {
+        flushParagraph();
+        let body = numbered[2];
+        while (i + 1 < lines.length && /^\s{2,}\S/.test(lines[i + 1]) && manualColumns(lines[i + 1]).length <= 1) {
+          body += ` ${lines[i + 1].trim()}`;
+          i += 1;
+        }
+        output.push(`<div class="manual-step"><span class="manual-step-number">${esc(numbered[1])}</span><span>${esc(body)}</span></div>`);
+        continue;
+      }
+
+      const bullet = trimmed.match(/^[•*-]\s+(.+)$/);
+      if (bullet) {
+        flushParagraph();
+        output.push(`<div class="manual-bullet"><span aria-hidden="true">•</span><span>${esc(bullet[1])}</span></div>`);
+        continue;
+      }
+
+      const columns = manualColumns(raw);
+      if (columns.length >= 2) {
+        flushParagraph();
+        const prevColumns = manualColumns(nonEmptyLine(i - 1, -1));
+        const nextColumns = manualColumns(nonEmptyLine(i + 1, 1));
+        const isHeader = prevColumns.length < 2 && nextColumns.length >= 2;
+        if (isHeader) {
+          const layout = manualColumnLayout(raw);
+          tableStarts = layout.starts;
+          output.push(renderManualDataRow(layout.cells, true));
+        } else {
+          output.push(renderManualDataRow(columns));
+        }
+        continue;
+      }
+
+      const letters = trimmed.replace(/[^A-Za-zÀ-ÿ]/g, '');
+      const isCalloutTitle = letters.length >= 4 && trimmed.length <= 60 && trimmed === trimmed.toUpperCase();
+      if (isCalloutTitle) {
+        flushParagraph();
+        output.push(`<div class="manual-callout-title">${esc(trimmed)}</div>`);
+        continue;
+      }
+
+      const next = nonEmptyLine(i + 1, 1);
+      if (trimmed.length <= 60 && !/[.!?:;]$/.test(trimmed) && manualColumns(next).length >= 2) {
+        flushParagraph();
+        output.push(`<h4 class="manual-subhead">${esc(trimmed)}</h4>`);
+        continue;
+      }
+
+      paragraph.push(trimmed);
+    }
+    flushParagraph();
+    return `<div class="chapter-text">${output.join('')}</div>`;
+  }
+
+  if (printManualRoot) {
+    printManualRoot.innerHTML = D.chapters.map((ch) => `<article class="print-chapter">
+      <div class="eyebrow">Capítulo ${esc(ch.id)}</div>
+      <h2>${esc(ch.title)}</h2>
+      ${renderChapterText(ch.text)}
+    </article>`).join('');
+  }
 
   function updateProgress() {
-    $$('.mark-done').forEach((button) => {
-      const id = Number(button.dataset.id);
-      const yes = reviewed.has(id);
-      button.textContent = yes ? 'Revisto ✓' : 'Marcar revisto';
-      button.classList.toggle('primary', yes);
-      $(`#chapter-${id}`)?.classList.toggle('is-reviewed', yes);
-    });
+    const activeReaderId = Number(readerRoot?.dataset.chapter);
+    const readerMark = readerRoot ? $('[data-reader-action="mark"]', readerRoot) : null;
+    if (readerMark && Number.isFinite(activeReaderId)) {
+      const yes = reviewed.has(activeReaderId);
+      readerMark.textContent = yes ? 'Revisto ✓' : 'Marcar como revisto';
+      readerMark.classList.toggle('primary', yes);
+    }
 
     const count = [...reviewed].filter((id) => D.chapters.some((ch) => Number(ch.id) === id)).length;
     const pct = D.chapters.length ? Math.round((count / D.chapters.length) * 100) : 0;
     $('#reviewedCount').textContent = String(count);
     $('#globalProgressText').textContent = `${pct}%`;
     $('#globalProgressBar').style.width = `${pct}%`;
+    $('#progressResume')?.classList.toggle('hidden', count === 0);
 
-    const last = Number(storage.get(lastChapterKey, ''));
+    const rawLast = storage.get(lastChapterKey, '');
+    const last = rawLast === '' ? Number.NaN : Number(rawLast);
     const continueButton = $('#continueReading');
-    const exists = D.chapters.some((ch) => Number(ch.id) === last);
+    const exists = count > 0 && Number.isFinite(last) && D.chapters.some((ch) => Number(ch.id) === last);
     continueButton?.classList.toggle('hidden', !exists);
     if (exists) continueButton.dataset.chapter = String(last);
+    else if (continueButton) delete continueButton.dataset.chapter;
   }
 
-  function openChapter(id) {
-    const numericId = Number(id);
-    const el = $(`#chapter-${numericId}`);
-    if (!el) return;
-    setView('manual');
-    el.open = true;
-    storage.set(lastChapterKey, String(numericId));
+  function openManualStart({ updateHash = true, scroll = true } = {}) {
+    const rawLast = storage.get(lastChapterKey, '');
+    const last = rawLast === '' ? Number.NaN : Number(rawLast);
+    const fallback = Number(D.chapters[0]?.id);
+    const chapterId = Number.isFinite(last) && D.chapters.some((ch) => Number(ch.id) === last)
+      ? last
+      : fallback;
+    if (Number.isFinite(chapterId)) openChapter(chapterId, { updateHash, scroll });
+  }
+
+  function readerNavButton(chapter, direction) {
+    if (!chapter) return '<span class="reader-nav-spacer" aria-hidden="true"></span>';
+    const label = direction === 'prev' ? '← Anterior' : 'Próximo →';
+    return `<button class="reader-nav-button ${direction}" type="button" data-reader-action="${direction}" data-chapter="${esc(chapter.id)}">
+      <span class="reader-nav-label">${label}</span>
+      <strong>${esc(chapter.title)}</strong>
+    </button>`;
+  }
+
+  function renderReader(chapter, { scroll = true } = {}) {
+    if (!readerRoot || !manualIndex) return;
+    const position = D.chapters.findIndex((ch) => Number(ch.id) === Number(chapter.id));
+    if (position < 0) return;
+    const previous = D.chapters[position - 1] || null;
+    const next = D.chapters[position + 1] || null;
+    const progressPct = Math.round(((position + 1) / D.chapters.length) * 100);
+
+    readerRoot.dataset.chapter = String(chapter.id);
+    readerRoot.innerHTML = `<div class="reader-toolbar">
+      <span class="reader-toolbar-title">Leitura</span>
+      <div class="reader-toolbar-actions">
+        <button class="btn" type="button" data-reader-action="copy">Copiar ligação</button>
+        <button class="btn" type="button" data-reader-action="mark">Marcar como revisto</button>
+      </div>
+    </div>
+    <article class="reader-page">
+      <header class="reader-page-header">
+        <div class="reader-meta">
+          <span class="eyebrow">Capítulo ${esc(chapter.id)}</span>
+          <span class="reader-position">${position + 1} / ${D.chapters.length}</span>
+        </div>
+        <h2>${esc(chapter.title)}</h2>
+        <div class="reader-progress" aria-label="Posição no manual"><div style="width:${progressPct}%"></div></div>
+      </header>
+      <div class="reader-content">${renderChapterText(chapter.text)}</div>
+      <nav class="reader-nav" aria-label="Navegação entre capítulos">
+        ${readerNavButton(previous, 'prev')}
+        ${readerNavButton(next, 'next')}
+      </nav>
+    </article>`;
+
+    manualIndex.hidden = false;
+    readerRoot.hidden = false;
     updateProgress();
-    history.replaceState(null, '', `#chapter-${numericId}`);
+    if (scroll) requestAnimationFrame(() => {
+      readerRoot.scrollIntoView({ behavior: scrollBehavior, block: 'start' });
+      readerRoot.focus({ preventScroll: true });
+    });
+  }
+
+  function openChapter(id, { updateHash = true, scroll = true } = {}) {
+    const numericId = Number(id);
+    const chapter = D.chapters.find((ch) => Number(ch.id) === numericId);
+    if (!chapter) return;
+    setView('manual');
+    renderReader(chapter, { scroll });
+    storage.set(lastChapterKey, String(numericId));
+    if (updateHash) history.replaceState(null, '', `#chapter-${numericId}`);
     $$('.navbtn[data-chapter]').forEach((button) => {
       button.classList.toggle('active', Number(button.dataset.chapter) === numericId);
     });
-    el.scrollIntoView({ behavior: scrollBehavior, block: 'start' });
     setMobileMenu(false);
   }
-
-  $$('.mark-done').forEach((button) => button.addEventListener('click', () => {
-    const id = Number(button.dataset.id);
-    reviewed.has(id) ? reviewed.delete(id) : reviewed.add(id);
-    storage.set(doneKey, JSON.stringify([...reviewed].sort((a, b) => a - b)));
-    updateProgress();
-    announce(reviewed.has(id) ? `Capítulo ${id} marcado como revisto.` : `Capítulo ${id} marcado como pendente.`);
-  }));
-
-  $$('.copy-link').forEach((button) => button.addEventListener('click', async () => {
-    const url = `${location.href.split('#')[0]}#chapter-${button.dataset.id}`;
-    const original = button.textContent;
-    const copied = await copyText(url);
-    button.textContent = copied ? 'Ligação copiada ✓' : 'Copia manualmente';
-    setTimeout(() => { button.textContent = original; }, 1400);
-  }));
+  readerRoot?.addEventListener('click', async (event) => {
+    const button = event.target.closest('[data-reader-action]');
+    if (!button) return;
+    const action = button.dataset.readerAction;
+    if (action === 'prev' || action === 'next') {
+      openChapter(button.dataset.chapter);
+      return;
+    }
+    const id = Number(readerRoot.dataset.chapter);
+    if (!Number.isFinite(id)) return;
+    if (action === 'mark') {
+      reviewed.has(id) ? reviewed.delete(id) : reviewed.add(id);
+      storage.set(doneKey, JSON.stringify([...reviewed].sort((a, b) => a - b)));
+      updateProgress();
+      announce(reviewed.has(id) ? `Capítulo ${id} marcado como revisto.` : `Capítulo ${id} marcado como pendente.`);
+      return;
+    }
+    if (action === 'copy') {
+      const url = `${location.href.split('#')[0]}#chapter-${id}`;
+      const original = button.textContent;
+      const copied = await copyText(url);
+      button.textContent = copied ? 'Ligação copiada ✓' : 'Copia manualmente';
+      setTimeout(() => { button.textContent = original; }, 1400);
+    }
+  });
 
   $('#continueReading')?.addEventListener('click', (event) => openChapter(event.currentTarget.dataset.chapter));
   updateProgress();
@@ -269,76 +466,64 @@
     return score;
   }
 
-  function highlightTitle(el, rawQuery) {
-    const id = Number(el.dataset.id);
-    const chapter = D.chapters.find((ch) => Number(ch.id) === id);
-    const target = $('.chapter-title', el);
-    if (!target || !chapter) return;
-    const rawTokens = rawQuery.trim().split(/\s+/).filter(Boolean).map((x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-    if (!rawTokens.length) {
-      target.textContent = chapter.title;
-      return;
-    }
-    const regex = new RegExp(`(${rawTokens.join('|')})`, 'gi');
-    const parts = chapter.title.split(regex);
-    target.replaceChildren(...parts.map((part) => {
-      if (regex.test(part)) {
-        regex.lastIndex = 0;
-        const mark = document.createElement('mark');
-        mark.textContent = part;
-        return mark;
-      }
-      regex.lastIndex = 0;
-      return document.createTextNode(part);
-    }));
-  }
-
-  function runSearch() {
-    if (!searchInput || !chaptersRoot) return;
+  function searchResults() {
+    if (!searchInput) return [];
     const raw = searchInput.value.trim();
     const query = normalize(raw);
     const tokens = query.split(' ').filter(Boolean);
-    const results = searchIndex
+    return searchIndex
       .map((entry) => ({ ...entry, score: scoreEntry(entry, query, tokens) }))
       .filter((entry) => !query || tokens.every((token) => entry.title.includes(token) || entry.body.includes(token)))
       .sort((a, b) => query ? (b.score - a.score || a.position - b.position) : a.position - b.position);
-
-    const visibleIds = new Set(results.map((x) => x.id));
-    const fragment = document.createDocumentFragment();
-
-    results.forEach((result) => {
-      const el = $(`#chapter-${result.id}`);
-      if (!el) return;
-      el.classList.remove('hidden');
-      if (query) el.open = true;
-      highlightTitle(el, raw);
-      fragment.appendChild(el);
-    });
-
-    D.chapters.forEach((ch) => {
-      const el = $(`#chapter-${ch.id}`);
-      if (!el || visibleIds.has(Number(ch.id))) return;
-      el.classList.add('hidden');
-      highlightTitle(el, '');
-      fragment.appendChild(el);
-    });
-
-    chaptersRoot.appendChild(fragment);
-    $('#searchCount').textContent = query
-      ? `${results.length} capítulo(s) · ordenados por relevância`
-      : 'Todos os capítulos';
-    $('#emptySearch').classList.toggle('hidden', results.length !== 0);
   }
 
-  searchInput?.addEventListener('input', runSearch);
+  function runSearch({ openBest = false } = {}) {
+    const raw = searchInput?.value.trim() || '';
+    const results = searchResults();
+    const status = $('#searchCount');
+    if (!raw) {
+      if (status) status.textContent = `${D.chapters.length} capítulos no livro`;
+      if (openBest) openManualStart({ updateHash: true, scroll: true });
+      return results;
+    }
+    if (!results.length) {
+      if (status) status.textContent = 'Nenhum capítulo encontrado';
+      announce('Nenhum capítulo corresponde à pesquisa.');
+      return results;
+    }
+    if (status) status.textContent = openBest
+      ? `${results.length} correspondência(s) · aberto o mais relevante`
+      : `${results.length} correspondência(s) · carrega em Procurar para abrir`;
+    if (openBest) openChapter(results[0].id, { updateHash: true, scroll: true });
+    return results;
+  }
+
+  const manualSearchForm = $('#manualSearchForm');
+  searchInput?.addEventListener('input', () => runSearch());
+  manualSearchForm?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    runSearch({ openBest: true });
+  });
+
   $$('.quick-search').forEach((button) => button.addEventListener('click', () => {
+    if (!searchInput) return;
     searchInput.value = button.dataset.q || '';
-    setView('manual', { updateHash: true });
-    runSearch();
-    searchInput.scrollIntoView({ behavior: scrollBehavior, block: 'center' });
-    searchInput.focus({ preventScroll: true });
+    setView('manual', { updateHash: false });
+    runSearch({ openBest: true });
   }));
 
+  // Public home search
+  const homeSearchForm = $('#homeSearchForm');
+  const homeSearch = $('#homeSearch');
+
+  homeSearchForm?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const query = homeSearch?.value?.trim() || '';
+    if (searchInput) searchInput.value = query;
+    setView('manual', { updateHash: false });
+    if (query) runSearch({ openBest: true });
+    else openManualStart({ updateHash: true, scroll: false });
+  });
   // Current reports
   const reportsRoot = $('#reportsRoot');
   if (reportsRoot && Array.isArray(D.currentReports)) {
@@ -373,7 +558,7 @@
           <span class="badge">Risco ${esc(d.risk)}</span>
         </div>
         <h3>${esc(d.label)}</h3>
-        <p class="muted">Capítulos ${d.chapters.map(esc).join(', ')}</p>
+        <span class="diag-card-cta">Ver diagnóstico <span aria-hidden="true">→</span></span>
       </button>
     </article>`).join('');
   }
@@ -381,16 +566,20 @@
   function showDiagnostic(id, { updateHash = true } = {}) {
     const d = D.diagnostics.find((x) => String(x.id) === String(id));
     if (!d) return;
+    const related = d.chapters
+      .map((chapterId) => D.chapters.find((chapter) => Number(chapter.id) === Number(chapterId)))
+      .filter(Boolean);
     setView('wizard');
-    $('#diagResult').innerHTML = `<div class="panel result" aria-live="polite">
+    $('#diagResult').innerHTML = `<article class="diag-result-card" aria-live="polite">
       <div class="kicker">${esc(d.confidence)} · risco ${esc(d.risk)}</div>
       <h2>${esc(d.label)}</h2>
-      <ol class="steps">${d.steps.map((s) => `<li>${esc(s)}</li>`).join('')}</ol>
-      <div class="chapter-tools">
-        ${d.chapters.map((c) => `<button type="button" class="btn goto-chapter" data-id="${esc(c)}">Abrir capítulo ${esc(c)}</button>`).join('')}
-      </div>
+      <ol class="diag-steps">${d.steps.map((s) => `<li>${esc(s)}</li>`).join('')}</ol>
+      ${related.length ? `<section class="diag-reading" aria-label="Leitura recomendada no manual">
+        <span class="eyebrow">Abrir no livro</span>
+        <div class="diag-chapter-links">${related.map((chapter) => `<button type="button" class="diag-chapter-link goto-chapter" data-id="${esc(chapter.id)}"><span>Capítulo ${esc(chapter.id)}</span><strong>${esc(chapter.title)}</strong><span aria-hidden="true">→</span></button>`).join('')}</div>
+      </section>` : ''}
       <div class="callout warn">Regra: altera uma variável de cada vez e regista o resultado.</div>
-    </div>`;
+    </article>`;
     $$('.goto-chapter', $('#diagResult')).forEach((button) => button.addEventListener('click', () => openChapter(button.dataset.id)));
     if (updateHash) history.replaceState(null, '', `#diag-${encodeURIComponent(d.id)}`);
     $('#diagResult').scrollIntoView({ behavior: scrollBehavior, block: 'start' });
@@ -430,44 +619,6 @@
   $$('[data-case]').forEach((checkbox) => checkbox.addEventListener('change', updateCaseProgress));
   updateCaseProgress();
 
-  // OS-aware commands
-  const osKey = 'revanced-manual-terminal';
-  const allowedOs = new Set(['powershell', 'cmd', 'unix']);
-  const commands = {
-    powershell: {
-      logcat: 'adb logcat -c\nadb logcat -v time > revanced-log.txt',
-      certs: 'apksigner verify --print-certs app-patched.apk',
-      packages: 'adb shell pm list packages | Select-String -Pattern "youtube"'
-    },
-    cmd: {
-      logcat: 'adb logcat -c\nadb logcat -v time > revanced-log.txt',
-      certs: 'apksigner verify --print-certs app-patched.apk',
-      packages: 'adb shell pm list packages | findstr /I youtube'
-    },
-    unix: {
-      logcat: 'adb logcat -c\nadb logcat -v time > revanced-log.txt',
-      certs: 'apksigner verify --print-certs app-patched.apk',
-      packages: 'adb shell pm list packages | grep -i youtube'
-    }
-  };
-
-  const osSelect = $('#osSelect');
-  let currentOs = storage.get(osKey, 'powershell');
-  if (!allowedOs.has(currentOs)) currentOs = 'powershell';
-  if (osSelect) osSelect.value = currentOs;
-
-  function renderCommands() {
-    currentOs = allowedOs.has(osSelect?.value) ? osSelect.value : 'powershell';
-    storage.set(osKey, currentOs);
-    Object.entries(commands[currentOs]).forEach(([key, value]) => {
-      const el = $(`#command-${key}`);
-      if (el) el.textContent = value;
-    });
-  }
-
-  osSelect?.addEventListener('change', renderCommands);
-  renderCommands();
-
   async function copyText(text) {
     try {
       if (!navigator.clipboard?.writeText) throw new Error('Clipboard API indisponível');
@@ -477,20 +628,6 @@
       return false;
     }
   }
-
-  $$('[data-copy-command]').forEach((button) => button.addEventListener('click', async () => {
-    const key = button.dataset.copyCommand;
-    const text = commands[currentOs]?.[key] || '';
-    const original = button.textContent;
-    const ok = await copyText(text);
-    if (ok) {
-      button.textContent = 'Copiado ✓';
-      announce('Comando copiado.');
-    } else {
-      window.prompt('Copia o comando:', text);
-    }
-    setTimeout(() => { button.textContent = original; }, 1400);
-  }));
 
   // Sources
   const sourcesRoot = $('#sourcesRoot');
@@ -513,7 +650,6 @@
       caseState: [...caseState].sort((a, b) => a - b),
       lastChapter: Number(storage.get(lastChapterKey, '')) || null,
       theme: document.documentElement.dataset.theme || 'dark',
-      terminal: currentOs
     };
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -554,11 +690,6 @@
         document.documentElement.dataset.theme = imported.theme;
         storage.set(themeKey, imported.theme);
       }
-      if (allowedOs.has(imported.terminal)) {
-        osSelect.value = imported.terminal;
-        renderCommands();
-      }
-
       $$('[data-case]').forEach((x) => { x.checked = caseState.includes(Number(x.dataset.case)); });
       updateCaseProgress();
       updateProgress();
@@ -652,7 +783,11 @@
     }
     if (hash.startsWith('#view-')) {
       const view = hash.slice('#view-'.length);
-      if (validViews.has(view)) setView(view);
+      const resolvedView = view === 'advanced' ? 'reports' : view;
+      if (!validViews.has(resolvedView)) return;
+      if (resolvedView === 'manual') openManualStart({ updateHash: false, scroll: false });
+      else setView(resolvedView);
+      if (view === 'advanced') history.replaceState(null, '', '#view-reports');
     }
   }
 

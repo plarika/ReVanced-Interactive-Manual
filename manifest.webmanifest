@@ -4,7 +4,7 @@
   "short_name": "ReVanced Manual",
   "description": "Manual interativo de troubleshooting ReVanced, edição técnica independente.",
   "lang": "pt-PT",
-  "start_url": "./#view-wizard",
+  "start_url": "./#view-home",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",

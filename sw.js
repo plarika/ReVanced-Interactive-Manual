@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'revanced-manual-v3.1.0';
+const CACHE_VERSION = 'revanced-manual-v3.1.0-public-ui-r11';
 const CORE_CACHE = `${CACHE_VERSION}-core`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
