@@ -3,10 +3,10 @@ window.MANUAL_DATA = {
     "title": "ReVanced Troubleshooting & Recovery Manual",
     "version": "3.0.1 Interactive",
     "baseline": "2.0 PDF",
-    "reviewed": "2026-08-16 19:18 Europe/Lisbon",
+    "reviewed": "2026-08-19 07:44 Europe/Lisbon",
     "language": "pt-PT",
     "disclaimer": "Edição técnica independente, não afiliada ao projeto ReVanced, Google ou YouTube.",
-    "lastIssueCheck": "2026-08-16T19:18:00+01:00"
+    "lastIssueCheck": "2026-08-19T07:44:00+01:00"
   },
   "chapters": [
     {
@@ -499,6 +499,18 @@ window.MANUAL_DATA = {
   ],
   "currentReports": [
     {
+      "issue": 387,
+      "title": "Após reset, adicionar conta no GmsCore falhou; reinstalar o YouTube patched resolveu o caso do autor",
+      "state": "CLOSED",
+      "reported": "2026-08-18",
+      "classification": "RELATADO / WORKAROUND DO AUTOR",
+      "evidence": "Baixa",
+      "scope": "GmsCore / login após factory reset",
+      "summary": "Após um factory reset, um utilizador reportou que o GmsCore devolvia uma mensagem genérica ao adicionar a conta. A issue foi encerrada depois de o próprio autor indicar que reinstalar o YouTube ReVanced resolveu o seu caso. Não há logs, confirmação upstream nem evidência suficiente para tratar isto como correção universal.",
+      "action": "Se o sintoma coincidir, confirmar primeiro versões e instalação correta de GmsCore/YouTube. Uma reinstalação controlada do YouTube patched pode ser testada sem alterar identidade do dispositivo nem outras opções. Se resultar, tratar apenas como workaround local e registar versões/logs.",
+      "url": "https://github.com/ReVanced/GmsCore/issues/387"
+    },
+    {
       "issue": 3500,
       "title": "YouTube Shorts: algumas pré-visualizações aparecem em ecrã inteiro",
       "state": "OPEN",
@@ -513,12 +525,12 @@ window.MANUAL_DATA = {
     {
       "issue": 3499,
       "title": "Vídeo demora ~30 s a iniciar, baixa qualidade e seletor indisponível",
-      "state": "OPEN",
+      "state": "CLOSED",
       "reported": "2026-08-15",
       "classification": "RELATADO + WORKAROUND COMUNITÁRIO",
       "evidence": "Média",
       "scope": "YouTube / Spoof video streams",
-      "summary": "O autor reporta atraso antes do playback, qualidade baixa e opção de qualidade indisponível. Há debug logs anexados. O próprio autor confirmou nos comentários que uma alteração de cliente spoof resolveu o seu caso, mas isso não constitui correção oficial.",
+      "summary": "O autor reportou atraso antes do playback, qualidade baixa e opção de qualidade indisponível. Há debug logs anexados. O autor confirmou que uma alteração de cliente spoof resolveu o seu caso, mas outro utilizador reportou que a mesma abordagem não funcionou. A issue foi encerrada como completed em 2026-08-18; continua sem fix oficial documentado.",
       "action": "Se o padrão coincidir, testar um único cliente alternativo em Spoof video streams, reiniciar totalmente a app e repetir o mesmo vídeo. Registar o resultado. Não promover visionOS como solução universal.",
       "url": "https://github.com/ReVanced/revanced-manager/issues/3499"
     },
@@ -557,6 +569,18 @@ window.MANUAL_DATA = {
       "summary": "Em transmissões em direto, o vídeo é reportado como pausando cerca de um minuto depois de entrar; fechar e reabrir a live só resolve temporariamente. Há debug log anexado.",
       "action": "Distinguir este caso do bug em vídeos normais. Recolher Stats for nerds e cliente spoof; alterar apenas uma variável por teste.",
       "url": "https://github.com/ReVanced/revanced-manager/issues/3494"
+    },
+    {
+      "issue": 384,
+      "title": "GmsCore: processo persistente pode terminar com AuthenticatorException timeout",
+      "state": "OPEN",
+      "reported": "2026-08-09",
+      "classification": "RELATADO / EVIDÊNCIA TÉCNICA",
+      "evidence": "Média",
+      "scope": "GmsCore / Android 16 / autenticação",
+      "summary": "Um relatório no repositório oficial do GmsCore inclui stack trace de um crash do processo :persistent causado por android.accounts.AuthenticatorException: timeout durante comunicação com AccountManager. O dispositivo estava sob carga elevada; ainda não existe confirmação de causa geral nem correção upstream documentada.",
+      "action": "Se login ou sincronização falhar, guardar logcat e procurar AuthenticatorException: timeout. Repetir o teste com o dispositivo em carga normal e registar versão do GmsCore/Android antes de limpar contas ou reinstalar componentes.",
+      "url": "https://github.com/ReVanced/GmsCore/issues/384"
     },
     {
       "issue": 3490,
