@@ -3,10 +3,10 @@ window.MANUAL_DATA = {
     "title": "ReVanced Troubleshooting & Recovery Manual",
     "version": "3.0.1 Interactive",
     "baseline": "2.0 PDF",
-    "reviewed": "2026-08-19 07:44 Europe/Lisbon",
+    "reviewed": "2026-08-19 10:25 Europe/Lisbon",
     "language": "pt-PT",
     "disclaimer": "Edição técnica independente, não afiliada ao projeto ReVanced, Google ou YouTube.",
-    "lastIssueCheck": "2026-08-19T07:44:00+01:00"
+    "lastIssueCheck": "2026-08-19T10:25:00+01:00"
   },
   "chapters": [
     {
@@ -498,6 +498,18 @@ window.MANUAL_DATA = {
     }
   ],
   "currentReports": [
+    {
+      "issue": 3501,
+      "title": "YouTube não carrega: vários clientes de streaming devolvem 400 e nenhum stream é obtido",
+      "state": "OPEN",
+      "reported": "2026-08-19",
+      "classification": "RELATADO / MÚLTIPLOS RELATOS",
+      "evidence": "Média",
+      "scope": "YouTube / Spoof video streams / playback",
+      "summary": "A issue oficial inclui logs com respostas 400 Bad Request em ANDROID_UNPLUGGED, ANDROID_CREATOR, IOS_UNPLUGGED e ANDROID_VR_AUTH, terminando em Could not fetch any client streams. Dois outros utilizadores reportaram o mesmo tipo de falha; um deles confirmou que voltar a aplicar os patches não resolveu e o vídeo continuou em carregamento infinito. Ainda não existe confirmação upstream da causa nem fix oficial.",
+      "action": "Confirmar versão do YouTube, patches e ReVanced Manager; guardar logs antes de alterar definições. Testar apenas um cliente de Spoof video streams de cada vez e reiniciar totalmente a app entre testes. Se todos os clientes devolverem 400, não limpar conta nem reinstalar GmsCore por defeito; aguardar confirmação upstream ou patches atualizados.",
+      "url": "https://github.com/ReVanced/revanced-manager/issues/3501"
+    },
     {
       "issue": 387,
       "title": "Após reset, adicionar conta no GmsCore falhou; reinstalar o YouTube patched resolveu o caso do autor",
