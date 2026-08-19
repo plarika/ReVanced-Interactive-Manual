@@ -1,69 +1,51 @@
 # ReVanced Troubleshooting & Recovery Manual — v3.1.0 Interactive
 
-Manual técnico **não oficial e web-only** para diagnóstico de ReVanced Manager, APKs patched, patches, GmsCore e problemas de reprodução.
+Manual técnico **não oficial e web-only** para ajudar a diagnosticar problemas com ReVanced Manager, aplicações patched, patches, GmsCore, instalação, login e reprodução.
 
-## Funcionalidades
+O objetivo é reunir orientação prática num único local, distinguindo claramente informação consolidada de problemas recentes ainda em investigação. Este projeto não é afiliado ao ReVanced, Google ou YouTube e não distribui APKs YouTube pré-patched.
 
-- diagnóstico guiado por sintoma com deep-links;
+## O que encontras no manual
+
+- **Manual em formato de livro**, atualmente com 35 capítulos técnicos;
+- **Procura o problema**, para chegar rapidamente ao capítulo mais relevante;
+- **Diagnósticos**, com percursos orientados por sintoma e ligações aos capítulos relacionados;
+- **Alertas**, para problemas recentes, relatos ainda não confirmados e alterações relevantes em investigação;
 - pesquisa por relevância, multi-palavra e tolerante a acentos;
-- 35 capítulos expansíveis e navegação móvel por drawer;
-- progresso global, “Continuar onde fiquei” e capítulos revistos;
-- exportação/importação segura do progresso local em JSON;
-- caso validado 0:55–1:00 com screenshots;
-- comandos ADB/apksigner adaptados a PowerShell, CMD e Linux/macOS;
-- modo claro/escuro e suporte a `prefers-reduced-motion`;
-- tabs acessíveis por teclado e foco visível;
-- impressão pelo navegador;
-- PWA instalável com ícones, shortcuts e atualização controlada;
-- funcionamento offline com Service Worker versionado.
+- navegação adaptada a telemóvel e computador;
+- progresso local e opção **Continuar onde fiquei**;
+- exportação e importação segura do progresso em JSON;
+- comandos adaptados a PowerShell, CMD e Linux/macOS;
+- modo claro/escuro, navegação por teclado e suporte a `prefers-reduced-motion`;
+- instalação como PWA e funcionamento offline com cache versionado.
 
-## Publicar no GitHub Pages
+## Como o conteúdo é atualizado
 
-1. Coloca estes ficheiros na raiz do repositório.
-2. Faz commit/push.
-3. Em **Settings → Pages**, escolhe **Deploy from a branch**.
-4. Seleciona a branch principal e a pasta **/(root)**.
-5. Guarda.
+A manutenção segue uma abordagem **official-first**: issues, releases, documentação e outras referências oficiais do ecossistema ReVanced têm prioridade. Relatos da comunidade podem complementar a análise, mas não são tratados automaticamente como correções confirmadas.
 
-O site é uma aplicação web estática. Pode abrir localmente via `index.html`, mas Service Worker/PWA exigem HTTP/HTTPS.
+Problemas recentes entram primeiro em **Alertas**, com estado, nível de evidência e uma ação de diagnóstico segura. Só passam para o **Manual** quando existe confirmação oficial ou evidência forte e reproduzível. Quando o assunto já está coberto, o capítulo existente é melhorado; quando for realmente novo, pode ser criado um novo capítulo.
 
-## Desenvolvimento seguro
-
-A v3.1.0 mantém `assets/manual-data.js` como fonte de conteúdo e separa comportamento/UI do conteúdo. Conteúdo dinâmico é escapado antes de entrar no DOM e links externos são restringidos a HTTPS/origem local.
-
-Para validação antes de publicar:
-
-```powershell
-git diff --check
-node --check .\assets\app.js
-node --check .\sw.js
-```
-
-O pacote de atualização inclui `TESTAR_V3_1_0.ps1` para automatizar checks estáticos.
+Workarounds são identificados como tal e não são apresentados como soluções universais.
 
 ## Segurança
 
-Usa apenas fontes ReVanced oficiais. O projeto ReVanced indica `revanced.app` como site oficial e publica avisos sobre sites falsos. Este repositório não deve distribuir APKs YouTube pré-patched.
+Usa fontes oficiais e confirma sempre a origem dos downloads. O site oficial do projeto ReVanced é `revanced.app`; existem sites e distribuições falsas que usam o nome ReVanced.
 
-Nunca sacrifiques Play Protect, 2FA, verificação de assinatura/versão ou outras proteções como “primeira correção”. Preserva logs e keystore antes de ações destrutivas.
+Evita desativar Play Protect, 2FA, verificações de assinatura ou outras proteções como primeira tentativa de resolução. Antes de ações destrutivas, preserva logs, configurações importantes e, quando aplicável, a keystore.
+
+## Estrutura do projeto
+
+O ReVanced Interactive Manual é uma aplicação web estática e **não depende de PDF**. O conteúdo principal fica separado da interface para permitir atualizações conservadoras sem redesenhar a experiência validada.
+
+A versão v3.1.0 mantém como princípios:
+
+- experiência consistente entre Manual, Procura o problema, Diagnósticos e Alertas;
+- acessibilidade e utilização móvel;
+- PWA/offline com atualização controlada;
+- alterações mínimas e verificáveis;
+- distinção entre relato, workaround, caso validado e correção confirmada.
 
 ## Licença e atribuição
 
-Esta edição técnica é independente e inclui referências para documentação oficial do ReVanced e Android. Se adaptares conteúdo diretamente de projetos GPL, preserva a licença e a atribuição aplicáveis.
+Esta edição técnica é independente e inclui referências para documentação oficial do ReVanced e Android. Se adaptares conteúdo diretamente de projetos com licenças próprias, preserva a licença e a atribuição aplicáveis.
 
 ReVanced, YouTube, Android e restantes marcas pertencem aos respetivos titulares.
-
-## Formato do projeto
-
-Este repositório é uma aplicação web estática. **Não inclui PDF** e não depende de PDF para funcionar.
-
-## v3.1.0 — UX, PWA, acessibilidade e manutenção
-
-- menu móvel real;
-- pesquisa avançada;
-- progresso global + export/import;
-- comandos por terminal;
-- PWA instalável e atualização offline controlada;
-- acessibilidade de tabs/foco/reduced-motion;
-- hardening de links dinâmicos e storage;
-- correção do comando de pesquisa de packages para PowerShell/CMD.
