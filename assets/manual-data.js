@@ -3,10 +3,10 @@ window.MANUAL_DATA = {
     "title": "ReVanced Troubleshooting & Recovery Manual",
     "version": "3.0.1 Interactive",
     "baseline": "2.0 PDF",
-    "reviewed": "2026-08-20 06:23 Europe/Lisbon",
+    "reviewed": "2026-08-20 07:20 Europe/Lisbon",
     "language": "pt-PT",
     "disclaimer": "Edição técnica independente, não afiliada ao projeto ReVanced, Google ou YouTube.",
-    "lastIssueCheck": "2026-08-20T06:23:00+01:00"
+    "lastIssueCheck": "2026-08-20T07:20:00+01:00"
   },
   "chapters": [
     {
@@ -608,14 +608,14 @@ window.MANUAL_DATA = {
     },
     {
       "issue": 3488,
-      "title": "Playback pode parar/retroceder ao sair da app ou desligar o ecrã",
+      "title": "Playback pode parar/retroceder e a qualidade pode degradar após ~1 min",
       "state": "OPEN",
       "reported": "2026-08",
-      "classification": "RELATADO / EVIDÊNCIA LIMITADA",
-      "evidence": "Baixa",
-      "scope": "YouTube / background",
-      "summary": "Foi reportado que, ao sair da app ou desligar o ecrã, a reprodução para durante alguns segundos e por vezes recua alguns segundos. O relatório não fornece logs técnicos úteis.",
-      "action": "Antes de atribuir ao ReVanced, excluir restrições de bateria/background do fabricante e comparar foreground vs background no mesmo vídeo.",
+      "classification": "RELATADO / MÚLTIPLOS RELATOS",
+      "evidence": "Média",
+      "scope": "YouTube / playback / background / Spoof video streams",
+      "summary": "O autor reportou pausas e recuos ao sair da app ou desligar o ecrã. Outros utilizadores relataram pausas/recuos aleatórios e, nalguns casos, queda de qualidade com o seletor bloqueado após cerca de 1 minuto. Alternar o cliente de Spoof video streams para visionOS ou Android VR resolveu temporariamente alguns casos, mas um utilizador relata regressão após dias ou vídeos longos. Não existe confirmação upstream de uma correção universal.",
+      "action": "Fazer teste A/B controlado: anotar o cliente atual, testar um cliente alternativo disponível, fechar/reabrir o YouTube e reproduzir o mesmo vídeo por pelo menos 3 minutos. Comparar foreground/background, qualidade e recuos. Se melhorar, voltar a testar após vídeos longos; se piorar ou regressar, reverter ao baseline e testar outro cliente. Não tratar visionOS/Android VR como correção permanente.",
       "url": "https://github.com/ReVanced/revanced-manager/issues/3488"
     },
     {
