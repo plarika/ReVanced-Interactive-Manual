@@ -506,7 +506,7 @@ window.MANUAL_DATA = {
       "classification": "RELATADO / MÚLTIPLOS RELATOS",
       "evidence": "Média",
       "scope": "YouTube Music / Spoof video streams / playback",
-      "summary": "A issue oficial do GmsCore reúne vários relatos de YouTube Music a parar ou bufferizar perto de 1 minuto e de Failed to Fetch Client Streams. Dois utilizadores confirmaram separadamente que selecionar Android VR em ReVanced > Miscellaneous > Spoof video streams > Default client resolveu o problema nos seus casos. Outros relatos indicam que usar versões mais antigas de YouTube Music ou GmsCore não resolveu. Não existe confirmação upstream da causa nem correção universal.",
+      "summary": "A issue oficial do GmsCore reúne vários relatos de YouTube Music a parar ou bufferizar perto de 1 minuto e de Failed to Fetch Client Streams. Três utilizadores confirmaram separadamente que selecionar Android VR em ReVanced > Miscellaneous > Spoof video streams > Default client resolveu o problema nos seus casos. Outros relatos indicam que usar versões mais antigas de YouTube Music ou GmsCore não resolveu. Não existe confirmação upstream da causa nem correção universal.",
       "action": "Confirmar versões de YouTube Music, patches e GmsCore; preservar logs antes de alterar definições. Testar Android VR apenas como workaround relatado, mudando um cliente de cada vez e reiniciando totalmente a app. Reproduzir pelo menos uma faixa completa e uma segunda faixa antes de concluir. Se falhar, voltar ao baseline e testar outro cliente disponível; não fazer downgrade de GmsCore nem usar forks não oficiais como primeira resposta.",
       "url": "https://github.com/ReVanced/GmsCore/issues/381"
     },
