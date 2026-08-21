@@ -3,10 +3,10 @@ window.MANUAL_DATA = {
     "title": "ReVanced Troubleshooting & Recovery Manual",
     "version": "3.0.1 Interactive",
     "baseline": "2.0 PDF",
-    "reviewed": "2026-08-20 23:23 Europe/Lisbon",
+    "reviewed": "2026-08-21 19:24 Europe/Lisbon",
     "language": "pt-PT",
     "disclaimer": "Edição técnica independente, não afiliada ao projeto ReVanced, Google ou YouTube.",
-    "lastIssueCheck": "2026-08-20T23:23:00+01:00"
+    "lastIssueCheck": "2026-08-21T19:24:00+01:00"
   },
   "chapters": [
     {
@@ -498,6 +498,18 @@ window.MANUAL_DATA = {
     }
   ],
   "currentReports": [
+    {
+      "issue": 377,
+      "title": "GmsCore: APK v0.3.13.2.250932 aparece como inválido em alguns dispositivos",
+      "state": "OPEN",
+      "reported": "2026-07-11",
+      "classification": "RELATADO / MÚLTIPLOS RELATOS",
+      "evidence": "Média",
+      "scope": "GmsCore / instalação / APK",
+      "summary": "A issue oficial do GmsCore reúne relatos em Samsung Fold5, Sony Xperia 10 III (Android 13) e Honor X8A (Android 14) de APK inválido ou que não instala. O autor original informou depois que v0.3.13.3.250932 instalou corretamente no seu dispositivo, mas um relato posterior no Honor X8A afirma que testar ambos os ficheiros continuou a falhar. A evidência confirma um problema de instalação em múltiplos dispositivos, mas não uma correção universal por versão.",
+      "action": "Confirmar que o APK veio apenas da release oficial do ReVanced GmsCore e registar nome exato do ficheiro, versão, variante, Android e erro de instalação. Não desativar Play Protect, verificações de assinatura ou outras proteções para forçar a instalação. Se v0.3.13.2.250932 for rejeitado, testar apenas uma release oficial mais recente adequada ao dispositivo e recolher o erro de `adb install` se persistir; evitar mirrors ou APKs reempacotados.",
+      "url": "https://github.com/ReVanced/GmsCore/issues/377"
+    },
     {
       "issue": 381,
       "title": "YouTube Music: Failed to Fetch Client Streams e playback bloqueia perto de 1 minuto",
