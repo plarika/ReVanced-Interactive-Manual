@@ -3,10 +3,10 @@ window.MANUAL_DATA = {
     "title": "ReVanced Troubleshooting & Recovery Manual",
     "version": "3.0.1 Interactive",
     "baseline": "2.0 PDF",
-    "reviewed": "2026-08-22 15:30 Europe/Lisbon",
+    "reviewed": "2026-08-23 01:22 Europe/Lisbon",
     "language": "pt-PT",
     "disclaimer": "Edição técnica independente, não afiliada ao projeto ReVanced, Google ou YouTube.",
-    "lastIssueCheck": "2026-08-22T15:30:00+01:00"
+    "lastIssueCheck": "2026-08-23T01:22:00+01:00"
   },
   "chapters": [
     {
@@ -498,6 +498,18 @@ window.MANUAL_DATA = {
     }
   ],
   "currentReports": [
+    {
+      "issue": 3505,
+      "title": "Google Photos 7.87+: app patched pode crashar no arranque",
+      "state": "OPEN",
+      "reported": "2026-08-22",
+      "classification": "RELATADO / NÃO CONFIRMADO",
+      "evidence": "Média",
+      "scope": "Google Photos / GmsCore support / arranque",
+      "summary": "Um relatório oficial descreve crash imediato após patching de Google Photos 7.87 ou superior; o teste documentado usa 7.89, Manager 2.6.0 e patches predefinidos com GmsCore support/Spoof features. O stack trace termina em ExceptionInInitializerError causado por NullPointerException em SharedPrefCategory durante a inicialização das settings da extensão ReVanced/GmsCoreSupport. É um único relato, sem confirmação upstream nem segundo dispositivo, por isso não prova incompatibilidade geral com todas as versões 7.87+.",
+      "action": "Se o Google Photos patched fechar ao arrancar, registar versão exata da app, Manager, patches, Android e logcat antes de alterar definições. Comparar primeiro com a versão sugerida/suportada pelos patches e com a seleção predefinida. Não limpar contas, não alterar GmsCore nem desativar proteções do Android como tentativa genérica. Se o stack trace coincidir, anexar evidência à issue e aguardar confirmação upstream ou patches atualizados.",
+      "url": "https://github.com/ReVanced/revanced-manager/issues/3505"
+    },
     {
       "issue": 377,
       "title": "GmsCore: APK v0.3.13.2.250932 aparece como inválido em alguns dispositivos",
