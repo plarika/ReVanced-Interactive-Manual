@@ -3,10 +3,10 @@ window.MANUAL_DATA = {
     "title": "ReVanced Troubleshooting & Recovery Manual",
     "version": "3.0.1 Interactive",
     "baseline": "2.0 PDF",
-    "reviewed": "2026-08-23 01:22 Europe/Lisbon",
+    "reviewed": "2026-08-23 06:24 Europe/Lisbon",
     "language": "pt-PT",
     "disclaimer": "Edição técnica independente, não afiliada ao projeto ReVanced, Google ou YouTube.",
-    "lastIssueCheck": "2026-08-23T01:22:00+01:00"
+    "lastIssueCheck": "2026-08-23T06:24:00+01:00"
   },
   "chapters": [
     {
@@ -530,8 +530,8 @@ window.MANUAL_DATA = {
       "classification": "RELATADO / MÚLTIPLOS RELATOS",
       "evidence": "Média",
       "scope": "YouTube Music / Spoof video streams / playback",
-      "summary": "A issue oficial do GmsCore reúne vários relatos de YouTube Music a parar ou bufferizar perto de 1 minuto e de Failed to Fetch Client Streams. Quatro utilizadores confirmaram separadamente que selecionar Android VR em ReVanced > Miscellaneous > Spoof video streams > Default client resolveu o problema nos seus casos. Outros relatos indicam que usar versões mais antigas de YouTube Music ou GmsCore não resolveu. Não existe confirmação upstream da causa nem correção universal.",
-      "action": "Confirmar versões de YouTube Music, patches e GmsCore; preservar logs antes de alterar definições. Testar Android VR apenas como workaround relatado, mudando um cliente de cada vez e reiniciando totalmente a app. Reproduzir pelo menos uma faixa completa e uma segunda faixa antes de concluir. Se falhar, voltar ao baseline e testar outro cliente disponível; não fazer downgrade de GmsCore nem usar forks não oficiais como primeira resposta.",
+      "summary": "A issue oficial do GmsCore reúne vários relatos de YouTube Music a parar ou bufferizar perto de 1 minuto e de Failed to Fetch Client Streams. Quatro utilizadores confirmaram separadamente que selecionar Android VR resolveu o problema nos seus casos. Uma segunda issue oficial do Manager (#3445), atualizada em 2026-08-23, reforça que o resultado varia por cliente: Android VR, visionOS ou Android Reel resolveram casos diferentes, enquanto pelo menos um utilizador relatou falha com todos os clientes testados. Não existe confirmação upstream da causa nem correção universal.",
+      "action": "Confirmar versões de YouTube Music, patches e GmsCore; preservar logs antes de alterar definições. Testar um cliente de cada vez (Android VR, visionOS ou outro disponível na build), reiniciar totalmente a app e reproduzir pelo menos uma faixa completa e uma segunda faixa. Se falhar, voltar ao baseline e testar outro cliente. Não confundir o cliente Spoof com compatibilidade de patching: mudar o cliente pode corrigir playback, mas não torna uma versão de YouTube Music não suportada automaticamente patchável. Não fazer downgrade de GmsCore nem usar forks não oficiais como primeira resposta.",
       "url": "https://github.com/ReVanced/GmsCore/issues/381"
     },
     {
