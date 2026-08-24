@@ -3,10 +3,10 @@ window.MANUAL_DATA = {
     "title": "ReVanced Troubleshooting & Recovery Manual",
     "version": "3.0.1 Interactive",
     "baseline": "2.0 PDF",
-    "reviewed": "2026-08-23 06:24 Europe/Lisbon",
+    "reviewed": "2026-08-24 12:19 Europe/Lisbon",
     "language": "pt-PT",
     "disclaimer": "Edição técnica independente, não afiliada ao projeto ReVanced, Google ou YouTube.",
-    "lastIssueCheck": "2026-08-23T06:24:00+01:00"
+    "lastIssueCheck": "2026-08-24T12:19:00+01:00"
   },
   "chapters": [
     {
@@ -677,6 +677,18 @@ window.MANUAL_DATA = {
       "summary": "O log publicado mostra PatchException no patch Disable analytics, causada por Required value was null durante matching de bytecode. Isto indica incompatibilidade concreta entre a versão da app e o patch, não um simples erro genérico do Manager.",
       "action": "Usar versão compatível/sugerida e patches atuais. Não insistir em várias versões aleatórias. Guardar o stack trace e verificar se a incompatibilidade foi corrigida upstream antes de repatchar.",
       "url": "https://github.com/ReVanced/revanced-manager/issues/3484"
+    },
+    {
+      "issue": 3507,
+      "title": "Reddit: patch Hide 'Trending Today' shelf pode falhar com Required value was null",
+      "state": "OPEN",
+      "reported": "2026-08-23",
+      "classification": "RELATADO / NÃO CONFIRMADO",
+      "evidence": "Média",
+      "scope": "Reddit / patching / Hide Trending Today shelf",
+      "summary": "Um relatório técnico mostra falha ao aplicar Hide 'Trending Today' shelf no Reddit 2026.33.1 com Manager 2.7.0-dev.11: PatchException causada por Required value was null durante o matching de bytecode em firstImmutableMethod. O erro aponta para incompatibilidade do patch com a estrutura dessa versão do Reddit; não há ainda segundo relato nem confirmação upstream.",
+      "action": "Preservar o stack trace, confirmar a versão sugerida/suportada do Reddit e os patches atuais, e repetir com seleção predefinida numa versão estável do Manager antes de concluir. Se a UI permitir, desmarcar apenas Hide 'Trending Today' shelf pode ser usado como teste A/B temporário para isolar o patch; não atribuir o erro a RAM, GmsCore ou permissões sem evidência.",
+      "url": "https://github.com/ReVanced/revanced-manager/issues/3507"
     }
   ]
 };
