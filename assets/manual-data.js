@@ -3,10 +3,10 @@ window.MANUAL_DATA = {
     "title": "ReVanced Troubleshooting & Recovery Manual",
     "version": "3.0.1 Interactive",
     "baseline": "2.0 PDF",
-    "reviewed": "2026-08-25 03:20 Europe/Lisbon",
+    "reviewed": "2026-08-27 00:19 Europe/Lisbon",
     "language": "pt-PT",
     "disclaimer": "Edição técnica independente, não afiliada ao projeto ReVanced, Google ou YouTube.",
-    "lastIssueCheck": "2026-08-25T03:20:00+01:00"
+    "lastIssueCheck": "2026-08-27T00:19:00+01:00"
   },
   "chapters": [
     {
@@ -686,7 +686,7 @@ window.MANUAL_DATA = {
       "classification": "RELATADO / MÚLTIPLOS RELATOS",
       "evidence": "Média",
       "scope": "YouTube / playback / qualidade / Spoof video streams",
-      "summary": "A issue oficial reúne múltiplas confirmações de vídeos que demoram cerca de 1–2 minutos a iniciar e, nalguns casos, ficam presos em baixa qualidade ou sem seletor de qualidade. Vários utilizadores relatam melhoria ao mudar o Default client de Spoof video streams para visionOS; Android VR também funciona em alguns casos. Há, porém, relatos em que estes clientes deixam de resolver ou não resolvem de todo, por isso não existe correção universal confirmada.",
+      "summary": "A issue oficial reúne múltiplas confirmações de vídeos que demoram cerca de 1–2 minutos a iniciar e, nalguns casos, ficam presos em baixa qualidade ou sem seletor de qualidade. Vários utilizadores relatam melhoria ao mudar o Default client de Spoof video streams para visionOS; Android VR também funciona em alguns casos. Há, porém, relatos em que estes clientes deixam de resolver ou não resolvem de todo. Uma corroboração recente na issue #3508, com patches 6.2.1 e Manager 2.6.0, relata qualidade presa perto de 360p em parte dos vídeos e ausência de melhoria ao testar Android Reel, Android Studio, visionOS e outros clientes. Não existe correção universal confirmada.",
       "action": "Confirmar versão do YouTube e patches, ativar debug logs e testar o mesmo vídeo com uma variável de cada vez. Se disponível, testar visionOS ou Android VR apenas como workaround relatado, reiniciando totalmente a app entre testes. Comparar tempo até iniciar, qualidade e seletor. Se o problema persistir em vários clientes, voltar ao baseline, preservar logs e não atribuir a falha à rede ou ao GmsCore sem evidência.",
       "url": "https://github.com/ReVanced/revanced-manager/issues/3381"
     },
