@@ -3,10 +3,10 @@ window.MANUAL_DATA = {
     "title": "ReVanced Troubleshooting & Recovery Manual",
     "version": "3.0.1 Interactive",
     "baseline": "2.0 PDF",
-    "reviewed": "2026-08-27 00:19 Europe/Lisbon",
+    "reviewed": "2026-08-27 05:24 Europe/Lisbon",
     "language": "pt-PT",
     "disclaimer": "Edição técnica independente, não afiliada ao projeto ReVanced, Google ou YouTube.",
-    "lastIssueCheck": "2026-08-27T00:19:00+01:00"
+    "lastIssueCheck": "2026-08-27T05:24:00+01:00"
   },
   "chapters": [
     {
@@ -542,8 +542,8 @@ window.MANUAL_DATA = {
       "classification": "RELATADO / MÚLTIPLOS RELATOS",
       "evidence": "Média",
       "scope": "YouTube / Spoof video streams / playback",
-      "summary": "A issue oficial inclui logs com respostas 400 Bad Request em ANDROID_UNPLUGGED, ANDROID_CREATOR, IOS_UNPLUGGED e ANDROID_VR_AUTH, terminando em Could not fetch any client streams. Vários utilizadores reportaram falhas semelhantes. Android VR ou visionOS resolvem alguns casos, mas falham noutros. Um novo relato isolado indica que desativar Spoof Video Streams fez o playback voltar a funcionar mesmo com Android VR já selecionado. Este comportamento é contraditório e não está confirmado pelo upstream; não deve ser tratado como correção geral. Ainda não existe confirmação upstream da causa nem fix oficial.",
-      "action": "Confirmar versão do YouTube, patches e ReVanced Manager; guardar logs antes de alterar definições. Testar apenas um cliente de Spoof video streams de cada vez e reiniciar totalmente a app entre testes. Android VR e visionOS podem ser testados como workarounds relatados, mas não são correções confirmadas. Desativar Spoof Video Streams só deve ser considerado como teste diagnóstico temporário para reproduzir o relato isolado, com reversão imediata se não resolver ou degradar playback; não recomendar essa opção como configuração permanente sem confirmação upstream. Se todos os clientes devolverem 400, não limpar conta nem reinstalar GmsCore por defeito; aguardar confirmação upstream ou patches atualizados.",
+      "summary": "A issue oficial inclui logs com respostas 400 Bad Request em ANDROID_UNPLUGGED, ANDROID_CREATOR, IOS_UNPLUGGED e ANDROID_VR_AUTH, terminando em Could not fetch any client streams. Vários utilizadores reportaram falhas semelhantes. Android VR ou visionOS resolvem alguns casos, mas falham noutros. Um relato isolado indica que desativar Spoof Video Streams fez o playback voltar a funcionar mesmo com Android VR já selecionado. Em 2026-08-26, outro utilizador relatou que trocar clientes, reiniciar, repatch e rollback para versões antigas não resolveu de forma duradoura; o repatch ajudou apenas cerca de 24 horas antes da regressão. Estes comportamentos são contraditórios e não estão confirmados pelo upstream; não devem ser tratados como correção geral. Ainda não existe confirmação upstream da causa nem fix oficial.",
+      "action": "Confirmar versão do YouTube, patches e ReVanced Manager; guardar logs antes de alterar definições. Testar apenas um cliente de Spoof video streams de cada vez e reiniciar totalmente a app entre testes. Android VR e visionOS podem ser testados como workarounds relatados, mas não são correções confirmadas. Desativar Spoof Video Streams só deve ser considerado como teste diagnóstico temporário para reproduzir o relato isolado, com reversão imediata se não resolver ou degradar playback; não recomendar essa opção como configuração permanente sem confirmação upstream. Se repatch ou rollback produzir melhoria apenas temporária, registar quanto tempo dura e reverter ao baseline suportado em vez de repetir ciclos de downgrade. Se todos os clientes devolverem 400, não limpar conta nem reinstalar GmsCore por defeito; aguardar confirmação upstream ou patches atualizados.",
       "url": "https://github.com/ReVanced/revanced-manager/issues/3501"
     },
     {
