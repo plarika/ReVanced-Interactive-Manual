@@ -3,10 +3,10 @@ window.MANUAL_DATA = {
     "title": "ReVanced Troubleshooting & Recovery Manual",
     "version": "3.0.1 Interactive",
     "baseline": "2.0 PDF",
-    "reviewed": "2026-09-01 10:22 Europe/Lisbon",
+    "reviewed": "2026-09-01 20:22 Europe/Lisbon",
     "language": "pt-PT",
     "disclaimer": "Edição técnica independente, não afiliada ao projeto ReVanced, Google ou YouTube.",
-    "lastIssueCheck": "2026-09-01T10:22:00+01:00"
+    "lastIssueCheck": "2026-09-01T20:22:00+01:00"
   },
   "chapters": [
     {
@@ -614,8 +614,8 @@ window.MANUAL_DATA = {
       "classification": "RELATADO / NÃO CONFIRMADO",
       "evidence": "Média",
       "scope": "YouTube Live / playback",
-      "summary": "Em transmissões em direto, o vídeo é reportado como pausando cerca de um minuto depois de entrar; fechar e reabrir a live só resolve temporariamente. Há debug log anexado.",
-      "action": "Distinguir este caso do bug em vídeos normais. Recolher Stats for nerds e cliente spoof; alterar apenas uma variável por teste.",
+      "summary": "Em transmissões em direto, o vídeo é reportado como pausando cerca de um minuto depois de entrar; fechar e reabrir a live só resolve temporariamente. A issue #3494 inclui debug log e várias respostas. Uma segunda issue independente, #3514 (01/09), descreve livestream a congelar após cerca de 1 minuto e apresentar erro; esse relato usa YouTube Morphe/branding externo e não inclui patch logs, por isso reforça apenas o sintoma e não estabelece causa no ReVanced oficial.",
+      "action": "Distinguir este caso do bug em vídeos normais. Recolher Stats for nerds, versão do YouTube/Manager/patches, cliente spoof e logs; alterar apenas uma variável por teste. Se a instalação usar Morphe, branding externo ou outros componentes terceiros, repetir primeiro numa baseline ReVanced oficial comparável antes de atribuir causalidade. Preservar os logs e evitar tratar fechar/reabrir a live como correção definitiva.",
       "url": "https://github.com/ReVanced/revanced-manager/issues/3494"
     },
     {
