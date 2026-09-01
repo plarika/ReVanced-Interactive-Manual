@@ -3,10 +3,10 @@ window.MANUAL_DATA = {
     "title": "ReVanced Troubleshooting & Recovery Manual",
     "version": "3.0.1 Interactive",
     "baseline": "2.0 PDF",
-    "reviewed": "2026-08-28 11:42 Europe/Lisbon",
+    "reviewed": "2026-09-01 10:22 Europe/Lisbon",
     "language": "pt-PT",
     "disclaimer": "Edição técnica independente, não afiliada ao projeto ReVanced, Google ou YouTube.",
-    "lastIssueCheck": "2026-08-28T11:42:00+01:00"
+    "lastIssueCheck": "2026-09-01T10:22:00+01:00"
   },
   "chapters": [
     {
@@ -713,6 +713,18 @@ window.MANUAL_DATA = {
       "summary": "Um único utilizador relata que, mesmo com Restore old version playback speed menu ativado, continua a ver a interface nova e não consegue selecionar velocidades acima de 2x. A issue está aberta, sem comentários, sem patch logs e sem debug logs úteis; não existe confirmação upstream nem reprodução independente.",
       "action": "Confirmar versões do YouTube, ReVanced Manager e patches; confirmar que a opção foi incluída na build e reiniciar totalmente a app. Comparar com uma build baseline usando a seleção predefinida e mudar apenas uma variável de cada vez. Não recomendar downgrade, limpeza de conta/GmsCore ou outras alterações destrutivas sem evidência adicional.",
       "url": "https://github.com/ReVanced/revanced-manager/issues/3510"
+    },
+    {
+      "issue": 3513,
+      "title": "YouTube: campo para escrever comentário pode desaparecer com Hide Emoji and Timestamp buttons",
+      "state": "OPEN",
+      "reported": "2026-09-01",
+      "classification": "RELATADO / NÃO CONFIRMADO",
+      "evidence": "Baixa",
+      "scope": "YouTube / comentários / Hide Emoji and Timestamp buttons",
+      "summary": "Um único relatório oficial indica que, com Hide Emoji and Timestamp buttons ativo, a área para escrever comentários pode ficar reduzida a uma linha cinzenta e deixar de ser utilizável. A issue foi aberta em 2026-09-01, não contém patch logs nem debug logs e ainda não tem confirmações independentes; a associação ao patch é, por isso, apenas relatada e não uma causa confirmada upstream.",
+      "action": "Se o sintoma coincidir, registar versões do YouTube, Manager e patches e confirmar que Hide Emoji and Timestamp buttons está incluído na build. Fazer um teste A/B controlado: repatchar apenas com essa opção desativada, mantendo APK, restantes patches e conta iguais, e comparar a caixa de comentários. Se a diferença for reproduzível, guardar logs e anexar o resultado à issue. Não limpar conta/GmsCore nem fazer downgrade como primeira tentativa.",
+      "url": "https://github.com/ReVanced/revanced-manager/issues/3513"
     }
   ]
 };
