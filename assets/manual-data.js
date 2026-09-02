@@ -737,6 +737,18 @@ window.MANUAL_DATA = {
       "summary": "A issue oficial #3511 relata que a reprodução no YouTube Music pode começar normalmente e, após cerca de 1 minuto, entrar em erro/buffering e deixar de continuar; pelo menos dois utilizadores adicionais confirmaram comportamento semelhante. O debug log do autor mostra Spoof video streams a usar ANDROID_REEL_NO_AUTH. Um utilizador reportou melhoria temporária ao mudar o Default client para visionOS, mas não existe confirmação upstream de causa nem de correção universal.",
       "action": "Registar versões do YouTube Music, Manager e patches e testar o mesmo conteúdo durante pelo menos 3 minutos. Fazer teste A/B mudando apenas o Default client de Spoof video streams, reiniciando totalmente a app entre testes. visionOS pode ser experimentado apenas como workaround reportado; se não melhorar ou houver regressão, voltar ao baseline. Preservar debug logs e não atribuir o problema à rede, conta ou GmsCore sem evidência adicional.",
       "url": "https://github.com/ReVanced/revanced-manager/issues/3511"
+    },
+    {
+      "issue": 1504,
+      "title": "YouTube Music pode entrar em ANR durante a reprodução com cadeia extensa de AbstractFuture",
+      "state": "OPEN",
+      "reported": "2026-08-17",
+      "classification": "RELATADO / EVIDÊNCIA TÉCNICA",
+      "evidence": "Média",
+      "scope": "YouTube Music / ANR / playback / async",
+      "summary": "Uma discussão oficial da organização ReVanced documenta um ANR no YouTube Music 8.40.54 patched com patches 6.2.1 e Manager 2.6.0: a thread principal permanece Runnable enquanto percorre recursivamente uma cadeia de cerca de 11 000–12 700 objetos Guava AbstractFuture, construindo uma string muito grande até exceder o prazo de input e a app ser terminada. O autor reproduziu o comportamento com GmsCore 0.3.13.3 e 0.3.13.2 e indica que a versão não patched da mesma app, no mesmo dispositivo, não apresenta o ANR. O próprio relatório afirma que o stream spoofing continua funcional; não há ainda reprodução independente nem confirmação upstream da causa.",
+      "action": "Se o sintoma for congelamento/ANR em vez de buffering simples, preservar o ANR trace e logcat antes de limpar dados. Registar versão do YouTube Music, Manager, patches, GmsCore, Android e dispositivo e comparar com a app não patched na mesma versão quando isso for seguro. Não assumir que mudar o cliente de Spoof video streams ou trocar GmsCore resolve este caso, porque o relatório aponta para uma cadeia assíncrona durante o runtime e não para falha de aquisição do stream. Tratar qualquer workaround como experimental até existir reprodução independente ou correção upstream.",
+      "url": "https://github.com/orgs/ReVanced/discussions/1504"
     }
   ]
 };
