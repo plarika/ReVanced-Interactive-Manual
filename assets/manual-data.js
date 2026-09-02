@@ -725,6 +725,18 @@ window.MANUAL_DATA = {
       "summary": "Um único relatório oficial indica que, com Hide Emoji and Timestamp buttons ativo, a área para escrever comentários pode ficar reduzida a uma linha cinzenta e deixar de ser utilizável. A issue foi aberta em 2026-09-01, não contém patch logs nem debug logs e ainda não tem confirmações independentes; a associação ao patch é, por isso, apenas relatada e não uma causa confirmada upstream.",
       "action": "Se o sintoma coincidir, registar versões do YouTube, Manager e patches e confirmar que Hide Emoji and Timestamp buttons está incluído na build. Fazer um teste A/B controlado: repatchar apenas com essa opção desativada, mantendo APK, restantes patches e conta iguais, e comparar a caixa de comentários. Se a diferença for reproduzível, guardar logs e anexar o resultado à issue. Não limpar conta/GmsCore nem fazer downgrade como primeira tentativa.",
       "url": "https://github.com/ReVanced/revanced-manager/issues/3513"
+    },
+    {
+      "issue": 3511,
+      "title": "YouTube Music pode parar após ~1 min e ficar em buffering",
+      "state": "OPEN",
+      "reported": "2026-08-29",
+      "classification": "RELATADO / MÚLTIPLOS RELATOS",
+      "evidence": "Média",
+      "scope": "YouTube Music / playback / Spoof video streams",
+      "summary": "A issue oficial #3511 relata que a reprodução no YouTube Music pode começar normalmente e, após cerca de 1 minuto, entrar em erro/buffering e deixar de continuar; pelo menos dois utilizadores adicionais confirmaram comportamento semelhante. O debug log do autor mostra Spoof video streams a usar ANDROID_REEL_NO_AUTH. Um utilizador reportou melhoria temporária ao mudar o Default client para visionOS, mas não existe confirmação upstream de causa nem de correção universal.",
+      "action": "Registar versões do YouTube Music, Manager e patches e testar o mesmo conteúdo durante pelo menos 3 minutos. Fazer teste A/B mudando apenas o Default client de Spoof video streams, reiniciando totalmente a app entre testes. visionOS pode ser experimentado apenas como workaround reportado; se não melhorar ou houver regressão, voltar ao baseline. Preservar debug logs e não atribuir o problema à rede, conta ou GmsCore sem evidência adicional.",
+      "url": "https://github.com/ReVanced/revanced-manager/issues/3511"
     }
   ]
 };
