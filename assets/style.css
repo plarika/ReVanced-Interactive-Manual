@@ -381,3 +381,5 @@ mark{background:rgba(242,198,109,.24);color:var(--text);border-radius:3px;paddin
   .chapter-text,.section-head>p,.diag-card p{color:#333}
   .footer{color:#555}
 }
+
+.language-switcher{display:inline-flex;gap:.25rem;align-items:center}.lang-button{border:1px solid var(--border,rgba(255,255,255,.16));background:transparent;color:inherit;border-radius:.45rem;padding:.4rem .55rem;font:inherit;cursor:pointer}.lang-button.active{background:var(--accent,#7c4dff);color:#fff;border-color:transparent}

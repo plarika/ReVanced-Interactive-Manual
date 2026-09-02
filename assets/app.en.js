@@ -3,7 +3,7 @@
 
   const D = window.MANUAL_DATA;
   if (!D || !Array.isArray(D.chapters) || !Array.isArray(D.diagnostics) || !Array.isArray(D.sources)) {
-    console.error('MANUAL_DATA ausente ou inválido.');
+    console.error('MANUAL_DATA is missing or invalid.');
     return;
   }
 
@@ -45,7 +45,7 @@
   const normalize = (value) => String(value ?? '')
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
-    .toLocaleLowerCase('pt-PT')
+    .toLocaleLowerCase('en')
     .replace(/\s+/g, ' ')
     .trim();
 
@@ -71,7 +71,7 @@
     const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
     document.documentElement.dataset.theme = next;
     storage.set(themeKey, next);
-    announce(`Tema ${next === 'light' ? 'claro' : 'escuro'} ativo.`);
+    announce(`${next === 'light' ? 'Light' : 'Dark'} theme active.`);
   });
 
   // Language
@@ -327,7 +327,7 @@
 
   if (printManualRoot) {
     printManualRoot.innerHTML = D.chapters.map((ch) => `<article class="print-chapter">
-      <div class="eyebrow">Capítulo ${esc(ch.id)}</div>
+      <div class="eyebrow">Chapter ${esc(ch.id)}</div>
       <h2>${esc(ch.title)}</h2>
       ${renderChapterText(ch.text)}
     </article>`).join('');
@@ -338,7 +338,7 @@
     const readerMark = readerRoot ? $('[data-reader-action="mark"]', readerRoot) : null;
     if (readerMark && Number.isFinite(activeReaderId)) {
       const yes = reviewed.has(activeReaderId);
-      readerMark.textContent = yes ? 'Revisto ✓' : 'Marcar como revisto';
+      readerMark.textContent = yes ? 'Reviewed ✓' : 'Mark as reviewed';
       readerMark.classList.toggle('primary', yes);
     }
 
@@ -370,7 +370,7 @@
 
   function readerNavButton(chapter, direction) {
     if (!chapter) return '<span class="reader-nav-spacer" aria-hidden="true"></span>';
-    const label = direction === 'prev' ? '← Anterior' : 'Próximo →';
+    const label = direction === 'prev' ? '← Previous' : 'Next →';
     return `<button class="reader-nav-button ${direction}" type="button" data-reader-action="${direction}" data-chapter="${esc(chapter.id)}">
       <span class="reader-nav-label">${label}</span>
       <strong>${esc(chapter.title)}</strong>
@@ -387,23 +387,23 @@
 
     readerRoot.dataset.chapter = String(chapter.id);
     readerRoot.innerHTML = `<div class="reader-toolbar">
-      <span class="reader-toolbar-title">Leitura</span>
+      <span class="reader-toolbar-title">Reading</span>
       <div class="reader-toolbar-actions">
-        <button class="btn" type="button" data-reader-action="copy">Copiar ligação</button>
-        <button class="btn" type="button" data-reader-action="mark">Marcar como revisto</button>
+        <button class="btn" type="button" data-reader-action="copy">Copy link</button>
+        <button class="btn" type="button" data-reader-action="mark">Mark as reviewed</button>
       </div>
     </div>
     <article class="reader-page">
       <header class="reader-page-header">
         <div class="reader-meta">
-          <span class="eyebrow">Capítulo ${esc(chapter.id)}</span>
+          <span class="eyebrow">Chapter ${esc(chapter.id)}</span>
           <span class="reader-position">${position + 1} / ${D.chapters.length}</span>
         </div>
         <h2>${esc(chapter.title)}</h2>
-        <div class="reader-progress" aria-label="Posição no manual"><div style="width:${progressPct}%"></div></div>
+        <div class="reader-progress" aria-label="Position in manual"><div style="width:${progressPct}%"></div></div>
       </header>
       <div class="reader-content">${renderChapterText(chapter.text)}</div>
-      <nav class="reader-nav" aria-label="Navegação entre capítulos">
+      <nav class="reader-nav" aria-label="Chapter navigation">
         ${readerNavButton(previous, 'prev')}
         ${readerNavButton(next, 'next')}
       </nav>
@@ -445,14 +445,14 @@
       reviewed.has(id) ? reviewed.delete(id) : reviewed.add(id);
       storage.set(doneKey, JSON.stringify([...reviewed].sort((a, b) => a - b)));
       updateProgress();
-      announce(reviewed.has(id) ? `Capítulo ${id} marcado como revisto.` : `Capítulo ${id} marcado como pendente.`);
+      announce(reviewed.has(id) ? `Chapter ${id} marked as reviewed.` : `Chapter ${id} marked as pending.`);
       return;
     }
     if (action === 'copy') {
       const url = `${location.href.split('#')[0]}#chapter-${id}`;
       const original = button.textContent;
       const copied = await copyText(url);
-      button.textContent = copied ? 'Ligação copiada ✓' : 'Copia manualmente';
+      button.textContent = copied ? 'Link copied ✓' : 'Copy manually';
       setTimeout(() => { button.textContent = original; }, 1400);
     }
   });
@@ -499,18 +499,18 @@
     const results = searchResults();
     const status = $('#searchCount');
     if (!raw) {
-      if (status) status.textContent = `${D.chapters.length} capítulos no livro`;
+      if (status) status.textContent = `${D.chapters.length} chapters in the manual`;
       if (openBest) openManualStart({ updateHash: true, scroll: true });
       return results;
     }
     if (!results.length) {
-      if (status) status.textContent = 'Nenhum capítulo encontrado';
-      announce('Nenhum capítulo corresponde à pesquisa.');
+      if (status) status.textContent = 'No chapter found';
+      announce('No chapter matches the search.');
       return results;
     }
     if (status) status.textContent = openBest
-      ? `${results.length} correspondência(s) · aberto o mais relevante`
-      : `${results.length} correspondência(s) · carrega em Procurar para abrir`;
+      ? `${results.length} match(es) · most relevant opened`
+      : `${results.length} match(es) · press Search to open`;
     if (openBest) openChapter(results[0].id, { updateHash: true, scroll: true });
     return results;
   }
@@ -545,21 +545,21 @@
   const reportsRoot = $('#reportsRoot');
   if (reportsRoot && Array.isArray(D.currentReports)) {
     reportsRoot.innerHTML = D.currentReports.map((r) => {
-      const evClass = r.evidence === 'Alta' ? 'evidence-high' : r.evidence === 'Média' ? 'evidence-medium' : 'evidence-low';
+      const evClass = r.evidence === 'High' ? 'evidence-high' : r.evidence === 'Medium' ? 'evidence-medium' : 'evidence-low';
       const stClass = r.state === 'OPEN' ? 'state-open' : 'state-closed';
       const url = safeUrl(r.url);
       return `<article class="report-card">
         <div class="report-head">
           <span class="badge ${stClass}">#${esc(r.issue)} · ${esc(r.state)}</span>
           <span class="badge">${esc(r.classification)}</span>
-          <span class="badge ${evClass}">Evidência ${esc(r.evidence)}</span>
+          <span class="badge ${evClass}">Evidence ${esc(r.evidence)}</span>
         </div>
         <div class="report-title">${esc(r.title)}</div>
-        <div class="report-meta">${esc(r.scope)} · reportado ${esc(r.reported)}</div>
+        <div class="report-meta">${esc(r.scope)} · reported ${esc(r.reported)}</div>
         <p>${esc(r.summary)}</p>
-        <div class="callout"><strong>Ação segura:</strong> ${esc(r.action)}</div>
+        <div class="callout"><strong>Safe action:</strong> ${esc(r.action)}</div>
         <div class="report-actions">
-          <a class="btn" href="${esc(url)}" target="_blank" rel="noopener noreferrer">Abrir issue oficial</a>
+          <a class="btn" href="${esc(url)}" target="_blank" rel="noopener noreferrer">Open official issue</a>
         </div>
       </article>`;
     }).join('');
@@ -571,11 +571,11 @@
     diagRoot.innerHTML = D.diagnostics.map((d) => `<article class="diag-card">
       <button type="button" data-diag="${esc(d.id)}">
         <div>
-          <span class="badge ${d.confidence === 'OFICIAL' ? 'official' : d.confidence === 'CASO VALIDADO' ? 'validated' : 'workaround'}">${esc(d.confidence)}</span>
-          <span class="badge">Risco ${esc(d.risk)}</span>
+          <span class="badge ${d.confidence === 'OFFICIAL' ? 'official' : d.confidence === 'VALIDATED CASE' ? 'validated' : 'workaround'}">${esc(d.confidence)}</span>
+          <span class="badge">Risk ${esc(d.risk)}</span>
         </div>
         <h3>${esc(d.label)}</h3>
-        <span class="diag-card-cta">Ver diagnóstico <span aria-hidden="true">→</span></span>
+        <span class="diag-card-cta">View diagnosis <span aria-hidden="true">→</span></span>
       </button>
     </article>`).join('');
   }
@@ -588,14 +588,14 @@
       .filter(Boolean);
     setView('wizard');
     $('#diagResult').innerHTML = `<article class="diag-result-card" aria-live="polite">
-      <div class="kicker">${esc(d.confidence)} · risco ${esc(d.risk)}</div>
+      <div class="kicker">${esc(d.confidence)} · risk ${esc(d.risk)}</div>
       <h2>${esc(d.label)}</h2>
       <ol class="diag-steps">${d.steps.map((s) => `<li>${esc(s)}</li>`).join('')}</ol>
-      ${related.length ? `<section class="diag-reading" aria-label="Leitura recomendada no manual">
-        <span class="eyebrow">Abrir no livro</span>
-        <div class="diag-chapter-links">${related.map((chapter) => `<button type="button" class="diag-chapter-link goto-chapter" data-id="${esc(chapter.id)}"><span>Capítulo ${esc(chapter.id)}</span><strong>${esc(chapter.title)}</strong><span aria-hidden="true">→</span></button>`).join('')}</div>
+      ${related.length ? `<section class="diag-reading" aria-label="Recommended reading in the manual">
+        <span class="eyebrow">Open in the manual</span>
+        <div class="diag-chapter-links">${related.map((chapter) => `<button type="button" class="diag-chapter-link goto-chapter" data-id="${esc(chapter.id)}"><span>Chapter ${esc(chapter.id)}</span><strong>${esc(chapter.title)}</strong><span aria-hidden="true">→</span></button>`).join('')}</div>
       </section>` : ''}
-      <div class="callout warn">Regra: altera uma variável de cada vez e regista o resultado.</div>
+      <div class="callout warn">Rule: change one variable at a time and record the result.</div>
     </article>`;
     $$('.goto-chapter', $('#diagResult')).forEach((button) => button.addEventListener('click', () => openChapter(button.dataset.id)));
     if (updateHash) history.replaceState(null, '', `#diag-${encodeURIComponent(d.id)}`);
@@ -606,12 +606,12 @@
 
   // Validated case checklist
   const caseSteps = [
-    'Confirmar que o sintoma ocorre perto de 0:55–1:00.',
-    'Anotar o cliente Spoof atual.',
-    'Alterar apenas Default Client.',
-    'Fechar completamente o YouTube e reabrir.',
-    'Reproduzir o mesmo conteúdo durante pelo menos 2–3 minutos.',
-    'Registar se a falha desapareceu e manter a configuração como baseline apenas nesse dispositivo.'
+    'Confirm that the symptom occurs around 0:55–1:00.',
+    'Note the current Spoof client.',
+    'Change only Default Client.',
+    'Close YouTube completely and reopen it.',
+    'Play the same content for at least 2–3 minutes.',
+    'Record whether the failure disappeared and keep the configuration as a baseline only on that device.'
   ];
   const caseKey = 'revanced-case055-checklist';
   let caseState;
@@ -638,7 +638,7 @@
 
   async function copyText(text) {
     try {
-      if (!navigator.clipboard?.writeText) throw new Error('Clipboard API indisponível');
+      if (!navigator.clipboard?.writeText) throw new Error('Clipboard API unavailable');
       await navigator.clipboard.writeText(text);
       return true;
     } catch {
@@ -677,7 +677,7 @@
     anchor.click();
     anchor.remove();
     URL.revokeObjectURL(url);
-    announce('Progresso exportado.');
+    announce('Progress exported.');
   });
 
   $('#importProgress')?.addEventListener('click', () => $('#importProgressFile')?.click());
@@ -686,13 +686,13 @@
     event.target.value = '';
     if (!file) return;
     if (file.size > 64 * 1024) {
-      alert('O ficheiro de progresso é demasiado grande.');
+      alert('The progress file is too large.');
       return;
     }
     try {
       const imported = JSON.parse(await file.text());
       if (!imported || imported.schema !== 1 || !Array.isArray(imported.reviewed) || !Array.isArray(imported.caseState)) {
-        throw new Error('Formato inválido');
+        throw new Error('Invalid format');
       }
       const validChapterIds = new Set(D.chapters.map((ch) => Number(ch.id)));
       reviewed = new Set(imported.reviewed.map(Number).filter((id) => validChapterIds.has(id)));
@@ -710,14 +710,14 @@
       $$('[data-case]').forEach((x) => { x.checked = caseState.includes(Number(x.dataset.case)); });
       updateCaseProgress();
       updateProgress();
-      announce('Progresso importado com sucesso.');
+      announce('Progress imported successfully.');
     } catch {
-      alert('Não foi possível importar o ficheiro. Confirma que foi exportado por esta versão do manual.');
+      alert('The file could not be imported. Confirm that it was exported by this version of the manual.');
     }
   });
 
   $('#resetProgress')?.addEventListener('click', () => {
-    if (!confirm('Apagar o progresso local deste manual?')) return;
+    if (!confirm('Delete this manual’s local progress?')) return;
     storage.remove(doneKey);
     storage.remove(caseKey);
     storage.remove(lastChapterKey);
@@ -726,7 +726,7 @@
     $$('[data-case]').forEach((x) => { x.checked = false; });
     updateProgress();
     updateCaseProgress();
-    announce('Progresso local apagado.');
+    announce('Local progress deleted.');
   });
 
   $('#printManual')?.addEventListener('click', () => window.print());
@@ -752,7 +752,7 @@
   window.addEventListener('appinstalled', () => {
     installButton?.classList.add('hidden');
     deferredInstallPrompt = null;
-    announce('Manual instalado como aplicação.');
+    announce('Manual installed as an app.');
   });
 
   if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
@@ -780,7 +780,7 @@
           location.reload();
         });
       } catch (error) {
-        console.warn('Service Worker não registado:', error);
+        console.warn('Service Worker not registered:', error);
       }
     });
   }

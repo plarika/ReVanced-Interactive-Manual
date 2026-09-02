@@ -1,14 +1,18 @@
-const CACHE_VERSION = 'revanced-manual-v3.1.0-public-ui-r35';
+const CACHE_VERSION = 'revanced-manual-v3.1.0-bilingual-r36';
 const CORE_CACHE = `${CACHE_VERSION}-core`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
 const CORE_ASSETS = [
   './',
   './index.html',
+  './index.pt.html',
   './assets/style.css?v=3.1.0-r12',
-  './assets/app.js?v=3.1.0-r12',
-  './assets/manual-data.js?v=3.1.0-r35',
-  './manifest.webmanifest?v=3.1.0-r12',
+  './assets/app.en.js?v=3.1.0-r36',
+  './assets/app.js?v=3.1.0-r36',
+  './assets/manual-data.en.js?v=3.1.0-r36',
+  './assets/manual-data.js?v=3.1.0-r36',
+  './manifest.webmanifest?v=3.1.0-r36',
+  './manifest.pt.webmanifest?v=3.1.0-r36',
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/icon-maskable-512.png'
