@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'revanced-manual-v3.1.0-bilingual-r36';
+const CACHE_VERSION = 'revanced-manual-v3.1.0-bilingual-r37';
 const CORE_CACHE = `${CACHE_VERSION}-core`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
@@ -9,8 +9,8 @@ const CORE_ASSETS = [
   './assets/style.css?v=3.1.0-r12',
   './assets/app.en.js?v=3.1.0-r36',
   './assets/app.js?v=3.1.0-r36',
-  './assets/manual-data.en.js?v=3.1.0-r36',
-  './assets/manual-data.js?v=3.1.0-r36',
+  './assets/manual-data.en.js?v=3.1.0-r37',
+  './assets/manual-data.js?v=3.1.0-r37',
   './manifest.webmanifest?v=3.1.0-r36',
   './manifest.pt.webmanifest?v=3.1.0-r36',
   './icons/icon-192.png',

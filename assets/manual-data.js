@@ -6,7 +6,7 @@ window.MANUAL_DATA = {
     "reviewed": "2026-09-01 20:22 Europe/Lisbon",
     "language": "pt-PT",
     "disclaimer": "Edição técnica independente, não afiliada ao projeto ReVanced, Google ou YouTube.",
-    "lastIssueCheck": "2026-09-01T20:22:00+01:00"
+    "lastIssueCheck": "2026-09-03T18:41:03+01:00"
   },
   "chapters": [
     {
@@ -749,6 +749,18 @@ window.MANUAL_DATA = {
       "summary": "Uma discussão oficial da organização ReVanced documenta um ANR no YouTube Music 8.40.54 patched com patches 6.2.1 e Manager 2.6.0: a thread principal permanece Runnable enquanto percorre recursivamente uma cadeia de cerca de 11 000–12 700 objetos Guava AbstractFuture, construindo uma string muito grande até exceder o prazo de input e a app ser terminada. O autor reproduziu o comportamento com GmsCore 0.3.13.3 e 0.3.13.2 e indica que a versão não patched da mesma app, no mesmo dispositivo, não apresenta o ANR. O próprio relatório afirma que o stream spoofing continua funcional; não há ainda reprodução independente nem confirmação upstream da causa.",
       "action": "Se o sintoma for congelamento/ANR em vez de buffering simples, preservar o ANR trace e logcat antes de limpar dados. Registar versão do YouTube Music, Manager, patches, GmsCore, Android e dispositivo e comparar com a app não patched na mesma versão quando isso for seguro. Não assumir que mudar o cliente de Spoof video streams ou trocar GmsCore resolve este caso, porque o relatório aponta para uma cadeia assíncrona durante o runtime e não para falha de aquisição do stream. Tratar qualquer workaround como experimental até existir reprodução independente ou correção upstream.",
       "url": "https://github.com/orgs/ReVanced/discussions/1504"
+    },
+    {
+      "issue": 3379,
+      "title": "YouTube/YouTube Music: notificações podem não chegar apesar de Cloud Messaging ativo",
+      "state": "OPEN",
+      "reported": "2026-05-25",
+      "classification": "RELATADO / MÚLTIPLOS RELATOS",
+      "evidence": "Média",
+      "scope": "YouTube / YouTube Music / GmsCore / notificações",
+      "summary": "A issue oficial #3379 do ReVanced Manager relata ausência de notificações no YouTube após repatch, apesar de GmsCore/microG atualizado, Cloud Messaging ativo e conta iniciada. Quatro utilizadores adicionais confirmaram comportamento semelhante, com atividade nova em 2026-09-03. A issue oficial GmsCore #379 documentou o mesmo sintoma em YouTube e YouTube Music em quatro telemóveis e recebeu confirmações adicionais. Nessa discussão, um utilizador apresentou análise técnica com HTTP 400 no registo Google Notification Platform e uma incompatibilidade de permissão C2DM, mas esta causalidade e a correção proposta não foram confirmadas upstream; o fecho de #379 também não documenta uma correção universal.",
+      "action": "Confirmar primeiro permissões de notificações da app, registo/estado de Cloud Messaging no GmsCore, versões de YouTube/YouTube Music, patches e GmsCore, e restrições de bateria/background. Recolher logcat/debug logs antes de limpar dados. Atualizar apenas por canais oficiais e testar novamente sem alterar várias variáveis ao mesmo tempo. Não editar manifestos, não aplicar patches externos experimentais, não limpar contas e não desativar proteções do Android como tentativa genérica; a hipótese técnica descrita em GmsCore #379 permanece não confirmada upstream.",
+      "url": "https://github.com/ReVanced/revanced-manager/issues/3379"
     }
   ]
 };
