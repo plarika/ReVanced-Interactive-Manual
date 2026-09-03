@@ -249,6 +249,17 @@
         continue;
       }
 
+      const earlySubsection = trimmed.match(/^\d+\.\d+\s+.+/);
+      const earlyLetters = trimmed.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ]/g, '');
+      const earlyCallout = earlyLetters.length >= 4 && trimmed.length <= 60 && trimmed === trimmed.toUpperCase();
+      if (earlySubsection || earlyCallout) {
+        tableStarts = null;
+        flushParagraph();
+        if (earlySubsection) output.push(`<h4 class="manual-subhead">${esc(trimmed)}</h4>`);
+        else output.push(`<div class="manual-callout-title">${esc(trimmed)}</div>`);
+        continue;
+      }
+
       if (tableStarts) {
         let end = i;
         while (end + 1 < lines.length && lines[end + 1].trim()) end += 1;
