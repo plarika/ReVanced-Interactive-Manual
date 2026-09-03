@@ -759,6 +759,7 @@
     window.addEventListener('load', async () => {
       try {
         const registration = await navigator.serviceWorker.register('./sw.js', { scope: './', updateViaCache: 'none' });
+        await registration.update();
         const showUpdate = (worker) => {
           if (!navigator.serviceWorker.controller || !worker) return;
           $('#updateToast')?.classList.remove('hidden');

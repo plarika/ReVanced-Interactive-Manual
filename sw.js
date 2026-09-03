@@ -1,4 +1,4 @@
-﻿const CACHE_VERSION = 'revanced-manual-v3.1.0-bilingual-r42';
+const CACHE_VERSION = 'revanced-manual-v3.1.0-bilingual-r43';
 const CORE_CACHE = `${CACHE_VERSION}-core`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
@@ -7,12 +7,12 @@ const CORE_ASSETS = [
   './index.html',
   './index.pt.html',
   './assets/style.css?v=3.1.0-r12',
-  './assets/app.en.js?v=3.1.0-r42',
-  './assets/app.js?v=3.1.0-r42',
-  './assets/manual-data.en.js?v=3.1.0-r42',
-  './assets/manual-data.js?v=3.1.0-r42',
-  './manifest.webmanifest?v=3.1.0-r42',
-  './manifest.pt.webmanifest?v=3.1.0-r42',
+  './assets/app.en.js?v=3.1.0-r43',
+  './assets/app.js?v=3.1.0-r43',
+  './assets/manual-data.en.js?v=3.1.0-r43',
+  './assets/manual-data.js?v=3.1.0-r43',
+  './manifest.webmanifest?v=3.1.0-r43',
+  './manifest.pt.webmanifest?v=3.1.0-r43',
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/icon-maskable-512.png'
@@ -25,6 +25,7 @@ const OPTIONAL_ASSETS = [
 ];
 
 self.addEventListener('install', (event) => {
+  self.skipWaiting();
   event.waitUntil((async () => {
     const cache = await caches.open(CORE_CACHE);
     await cache.addAll(CORE_ASSETS);
