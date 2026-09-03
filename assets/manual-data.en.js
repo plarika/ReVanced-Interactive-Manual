@@ -6,7 +6,7 @@ window.MANUAL_DATA = {
     "reviewed": "2026-09-01 20:22 Europe/Lisbon",
     "language": "en",
     "disclaimer": "Independent technical edition, not affiliated with the ReVanced project, Google, or YouTube.",
-    "lastIssueCheck": "2026-09-03T18:41:03+01:00"
+    "lastIssueCheck": "2026-09-03T23:37:21+01:00"
   },
   "chapters": [
     {
@@ -495,6 +495,12 @@ window.MANUAL_DATA = {
       "name": "ReVanced - counterfeit notice",
       "url": "https://counterfeits.revanced.app/",
       "kind": "Oficial"
+    },
+    {
+      "id": "R18",
+      "name": "ReVanced - official revanced-patches status/mirror",
+      "url": "https://github.com/ReVanced/where-is-revanced-patches",
+      "kind": "Official"
     }
   ],
   "currentReports": [
@@ -761,6 +767,18 @@ window.MANUAL_DATA = {
       "summary": "Official ReVanced Manager issue #3379 reports missing YouTube notifications after repatching despite updated GmsCore/microG, Cloud Messaging being enabled and the account being signed in. Four additional users reported similar behavior, with new activity on 2026-09-03. Official GmsCore issue #379 documented the same symptom for YouTube and YouTube Music across four phones and received additional confirmations. In that discussion, one user presented technical analysis involving an HTTP 400 response during Google Notification Platform registration and a C2DM permission mismatch, but neither that causal explanation nor the proposed fix has been confirmed upstream; the closure of #379 also does not document a universal fix.",
       "action": "First confirm the app notification permissions, Cloud Messaging registration/status in GmsCore, YouTube/YouTube Music versions, patches, GmsCore version, and battery/background restrictions. Collect logcat/debug logs before clearing data. Update only through official channels and retest without changing multiple variables at once. Do not edit manifests, apply experimental external patches, clear accounts, or disable Android protections as a generic attempt; the technical hypothesis described in GmsCore #379 remains unconfirmed upstream.",
       "url": "https://github.com/ReVanced/revanced-manager/issues/3379"
+    },
+    {
+      "issue": "PATCHES-DMCA-2026",
+      "title": "ReVanced Patches: GitHub repository temporarily unavailable; development continues on the official GitLab mirror",
+      "state": "CONFIRMED",
+      "reported": "2026-03-24",
+      "classification": "CONFIRMED / OFFICIAL",
+      "evidence": "High",
+      "scope": "ReVanced Patches / official sources / GitHub / GitLab",
+      "summary": "The official ReVanced/revanced-patches repository is unavailable on GitHub because of a DMCA process. The ReVanced organization published the where-is-revanced-patches repository explaining that it submitted a counter-notification and that development continues on the official https://gitlab.com/revanced/revanced-patches mirror while GitHub is unavailable. This is an official project infrastructure status, not a community report.",
+      "action": "If a direct ReVanced/revanced-patches GitHub link fails, do not assume the patches were abandoned and do not replace the source with random forks. First verify the official ReVanced/where-is-revanced-patches notice and use only the GitLab mirror identified by the organization while the GitHub repository is unavailable. ReVanced Manager should continue using officially configured sources; do not introduce third-party URLs as a workaround.",
+      "url": "https://github.com/ReVanced/where-is-revanced-patches"
     }
   ]
 };
