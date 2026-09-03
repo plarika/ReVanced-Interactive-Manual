@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'revanced-manual-v3.1.0-bilingual-r41';
+﻿const CACHE_VERSION = 'revanced-manual-v3.1.0-bilingual-r42';
 const CORE_CACHE = `${CACHE_VERSION}-core`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
@@ -7,12 +7,12 @@ const CORE_ASSETS = [
   './index.html',
   './index.pt.html',
   './assets/style.css?v=3.1.0-r12',
-  './assets/app.en.js?v=3.1.0-r41',
-  './assets/app.js?v=3.1.0-r41',
-  './assets/manual-data.en.js?v=3.1.0-r41',
-  './assets/manual-data.js?v=3.1.0-r41',
-  './manifest.webmanifest?v=3.1.0-r41',
-  './manifest.pt.webmanifest?v=3.1.0-r41',
+  './assets/app.en.js?v=3.1.0-r42',
+  './assets/app.js?v=3.1.0-r42',
+  './assets/manual-data.en.js?v=3.1.0-r42',
+  './assets/manual-data.js?v=3.1.0-r42',
+  './manifest.webmanifest?v=3.1.0-r42',
+  './manifest.pt.webmanifest?v=3.1.0-r42',
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/icon-maskable-512.png'
