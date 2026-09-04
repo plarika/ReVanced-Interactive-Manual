@@ -6,7 +6,7 @@ window.MANUAL_DATA = {
     "reviewed": "2026-09-01 20:22 Europe/Lisbon",
     "language": "en",
     "disclaimer": "Independent technical edition, not affiliated with the ReVanced project, Google, or YouTube.",
-    "lastIssueCheck": "2026-09-03T23:37:21+01:00"
+    "lastIssueCheck": "2026-09-04T14:37:13+01:00"
   },
   "chapters": [
     {
@@ -501,6 +501,18 @@ window.MANUAL_DATA = {
       "name": "ReVanced - official revanced-patches status/mirror",
       "url": "https://github.com/ReVanced/where-is-revanced-patches",
       "kind": "Official"
+    },
+    {
+      "id": "R19",
+      "name": "ReVanced Manager issue #2962 — YouTube Music / Android Auto",
+      "url": "https://github.com/ReVanced/revanced-manager/issues/2962",
+      "kind": "Official issue"
+    },
+    {
+      "id": "R20",
+      "name": "ReVanced GmsCore — release v0.3.13.3.250932 (pre-release)",
+      "url": "https://github.com/ReVanced/GmsCore/releases/tag/v0.3.13.3.250932",
+      "kind": "Official"
     }
   ],
   "currentReports": [
@@ -779,6 +791,18 @@ window.MANUAL_DATA = {
       "summary": "The official ReVanced/revanced-patches repository is unavailable on GitHub because of a DMCA process. The ReVanced organization published the where-is-revanced-patches repository explaining that it submitted a counter-notification and that development continues on the official https://gitlab.com/revanced/revanced-patches mirror while GitHub is unavailable. This is an official project infrastructure status, not a community report.",
       "action": "If a direct ReVanced/revanced-patches GitHub link fails, do not assume the patches were abandoned and do not replace the source with random forks. First verify the official ReVanced/where-is-revanced-patches notice and use only the GitLab mirror identified by the organization while the GitHub repository is unavailable. ReVanced Manager should continue using officially configured sources; do not introduce third-party URLs as a workaround.",
       "url": "https://github.com/ReVanced/where-is-revanced-patches"
+    },
+    {
+      "issue": 2962,
+      "title": "YouTube Music on Android Auto: crash, infinite loading or blank screens; maintainer points to current GmsCore pre-release",
+      "state": "CLOSED / DUPLICATE",
+      "reported": "2026-02-25",
+      "classification": "REPORTED / MULTIPLE REPORTS",
+      "evidence": "Medium",
+      "scope": "YouTube Music / Android Auto / GmsCore",
+      "summary": "Official issue #2962 contains multiple reports of patched YouTube Music crashing, loading indefinitely or showing blank screens in Android Auto. On 2026-09-04, a ReVanced maintainer stated in the issue that the latest ReVanced GmsCore pre-release should work and asked users with persistent failures to report them in the existing open official issue. This is upstream guidance, not proof of a universal fix: earlier reports describe third-party GmsCore workarounds that only worked partially or later stopped working, and this manual does not recommend those builds. Official release v0.3.13.3.250932 remains marked as a pre-release and its release notes warn about handling of the -user prefix by the GmsCore support patch.",
+      "action": "If YouTube Music fails specifically in Android Auto, first record the exact YouTube Music, patches, Manager and ReVanced GmsCore versions. Use only official ReVanced releases; if you are on an older official version and the symptom matches, the latest official pre-release may be tested as upstream guidance while keeping all other variables unchanged. Do not install third-party forks/test builds, do not disable Play Protect, and do not force a downgrade. If the problem persists with the current official pre-release, preserve logs and report it through the official issue indicated by the maintainer.",
+      "url": "https://github.com/ReVanced/revanced-manager/issues/2962"
     }
   ]
 };
