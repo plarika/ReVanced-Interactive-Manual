@@ -6,7 +6,7 @@ window.MANUAL_DATA = {
     "reviewed": "2026-09-01 20:22 Europe/Lisbon",
     "language": "pt-PT",
     "disclaimer": "Edição técnica independente, não afiliada ao projeto ReVanced, Google ou YouTube.",
-    "lastIssueCheck": "2026-09-04T14:37:13+01:00"
+    "lastIssueCheck": "2026-09-06T06:40:44+01:00"
   },
   "chapters": [
     {
@@ -513,6 +513,12 @@ window.MANUAL_DATA = {
       "name": "ReVanced GmsCore — release v0.3.13.3.250932 (pré-release)",
       "url": "https://github.com/ReVanced/GmsCore/releases/tag/v0.3.13.3.250932",
       "kind": "Oficial"
+    },
+    {
+      "id": "R21",
+      "name": "ReVanced GmsCore issue #381 — YouTube Music playback / ~1 minute buffering",
+      "url": "https://github.com/ReVanced/GmsCore/issues/381",
+      "kind": "Issue oficial"
     }
   ],
   "currentReports": [
@@ -752,8 +758,8 @@ window.MANUAL_DATA = {
       "classification": "RELATADO / MÚLTIPLOS RELATOS",
       "evidence": "Média",
       "scope": "YouTube Music / playback / Spoof video streams",
-      "summary": "A issue oficial #3511 relata que a reprodução no YouTube Music pode começar normalmente e, após cerca de 1 minuto, entrar em erro/buffering e deixar de continuar; pelo menos dois utilizadores adicionais confirmaram comportamento semelhante. O debug log do autor mostra Spoof video streams a usar ANDROID_REEL_NO_AUTH. Um utilizador reportou melhoria temporária ao mudar o Default client para visionOS, mas não existe confirmação upstream de causa nem de correção universal.",
-      "action": "Registar versões do YouTube Music, Manager e patches e testar o mesmo conteúdo durante pelo menos 3 minutos. Fazer teste A/B mudando apenas o Default client de Spoof video streams, reiniciando totalmente a app entre testes. visionOS pode ser experimentado apenas como workaround reportado; se não melhorar ou houver regressão, voltar ao baseline. Preservar debug logs e não atribuir o problema à rede, conta ou GmsCore sem evidência adicional.",
+      "summary": "A issue oficial #3511 relata que a reprodução no YouTube Music pode começar normalmente e, após cerca de 1 minuto, entrar em erro/buffering e deixar de continuar; pelo menos dois utilizadores adicionais confirmaram comportamento semelhante. O debug log do autor mostra Spoof video streams a usar ANDROID_REEL_NO_AUTH. Um utilizador reportou melhoria temporária ao mudar o Default client para visionOS, mas não existe confirmação upstream de causa nem de correção universal. A issue oficial ReVanced/GmsCore #381, atualizada em 2026-09-05, acrescenta vários relatos independentes do mesmo padrão em YouTube Music e YouTube; três utilizadores reportam que mudar apenas o Default client para Android VR resolveu o bloqueio de ~1 minuto. Isto reforça Android VR como workaround comunitário reproduzido, mas não confirma causa nem correção universal upstream.",
+      "action": "Registar versões do YouTube Music, Manager e patches e testar o mesmo conteúdo durante pelo menos 3 minutos. Fazer teste A/B mudando apenas o Default client de Spoof video streams, reiniciando totalmente a app entre testes. visionOS pode ser experimentado apenas como workaround reportado; se não melhorar ou houver regressão, voltar ao baseline. Preservar debug logs e não atribuir o problema à rede, conta ou GmsCore sem evidência adicional. Android VR tem agora múltiplas confirmações na issue oficial GmsCore #381 e pode ser priorizado como teste A/B, mantendo todas as restantes variáveis constantes.",
       "url": "https://github.com/ReVanced/revanced-manager/issues/3511"
     },
     {
