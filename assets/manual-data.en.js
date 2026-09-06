@@ -6,7 +6,7 @@ window.MANUAL_DATA = {
     "reviewed": "2026-09-01 20:22 Europe/Lisbon",
     "language": "en",
     "disclaimer": "Independent technical edition, not affiliated with the ReVanced project, Google, or YouTube.",
-    "lastIssueCheck": "2026-09-06T16:36:26+01:00"
+    "lastIssueCheck": "2026-09-06T21:39:00+01:00"
   },
   "chapters": [
     {
@@ -519,6 +519,12 @@ window.MANUAL_DATA = {
       "name": "ReVanced GmsCore issue #381 — YouTube Music playback / ~1 minute buffering",
       "url": "https://github.com/ReVanced/GmsCore/issues/381",
       "kind": "Official issue"
+    },
+    {
+      "id": "R22",
+      "name": "ReVanced Manager issue #3188 — root mount lost after reboot/removing Manager",
+      "url": "https://github.com/ReVanced/revanced-manager/issues/3188",
+      "kind": "Official issue"
     }
   ],
   "currentReports": [
@@ -809,6 +815,18 @@ window.MANUAL_DATA = {
       "summary": "Official issue #2962 contains multiple reports of patched YouTube Music crashing, loading indefinitely or showing blank screens in Android Auto. On 2026-09-04, a ReVanced maintainer stated in the issue that the latest ReVanced GmsCore pre-release should work and asked users with persistent failures to report them in the existing open official issue. This is upstream guidance, not proof of a universal fix: earlier reports describe third-party GmsCore workarounds that only worked partially or later stopped working, and this manual does not recommend those builds. Official release v0.3.13.3.250932 remains marked as a pre-release and its release notes warn about handling of the -user prefix by the GmsCore support patch.",
       "action": "If YouTube Music fails specifically in Android Auto, first record the exact YouTube Music, patches, Manager and ReVanced GmsCore versions. Use only official ReVanced releases; if you are on an older official version and the symptom matches, the latest official pre-release may be tested as upstream guidance while keeping all other variables unchanged. Do not install third-party forks/test builds, do not disable Play Protect, and do not force a downgrade. If the problem persists with the current official pre-release, preserve logs and report it through the official issue indicated by the maintainer.",
       "url": "https://github.com/ReVanced/revanced-manager/issues/2962"
+    },
+    {
+      "issue": 3188,
+      "title": "Root: patched mount may be lost after reboot; newer reports include remount failure",
+      "state": "OPEN",
+      "reported": "2026-03-23",
+      "classification": "REPORTED / MULTIPLE REPORTS",
+      "evidence": "Medium",
+      "scope": "ReVanced Manager / root / mount / YouTube / YouTube Music",
+      "summary": "Official issue #3188 contains multiple reports of root installations where the YouTube/YouTube Music mount does not persist after reboot, causing the app to return to stock or require another Mount action in ReVanced Manager. On 2026-09-06, a new report said both apps disappeared from the app list and Manager returned \"Failed to mount: Failed to load application info\"; that user had also experimented with PlayIntegrityFork and HideMyApplist modules, so causality cannot be assigned to those modules and that symptom must not be generalized. An official-repository PR (#3469) proposes mount-script changes, but it is still unmerged and is not a confirmed fix.",
+      "action": "On a root installation, if the patched app is no longer mounted after reboot, first confirm that the installed stock version matches the expected version and that the mount modules remain active. If Manager Mount still works, use it only as a temporary diagnostic and verify after force-stopping/reopening the app. If Mount fails or the app disappears, collect Manager logs, root/module logs and mount-script output before changing modules. Do not install third-party fix modules or treat PR #3469 as an official fix unless it is accepted upstream.",
+      "url": "https://github.com/ReVanced/revanced-manager/issues/3188"
     }
   ]
 };

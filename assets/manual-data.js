@@ -6,7 +6,7 @@ window.MANUAL_DATA = {
     "reviewed": "2026-09-01 20:22 Europe/Lisbon",
     "language": "pt-PT",
     "disclaimer": "Edição técnica independente, não afiliada ao projeto ReVanced, Google ou YouTube.",
-    "lastIssueCheck": "2026-09-06T16:36:26+01:00"
+    "lastIssueCheck": "2026-09-06T21:39:00+01:00"
   },
   "chapters": [
     {
@@ -519,6 +519,12 @@ window.MANUAL_DATA = {
       "name": "ReVanced GmsCore issue #381 — YouTube Music playback / ~1 minute buffering",
       "url": "https://github.com/ReVanced/GmsCore/issues/381",
       "kind": "Issue oficial"
+    },
+    {
+      "id": "R22",
+      "name": "ReVanced Manager issue #3188 — root mount perdido após reboot/remover Manager",
+      "url": "https://github.com/ReVanced/revanced-manager/issues/3188",
+      "kind": "Issue oficial"
     }
   ],
   "currentReports": [
@@ -809,6 +815,18 @@ window.MANUAL_DATA = {
       "summary": "A issue oficial #2962 reúne múltiplos relatos de YouTube Music patched a crashar, ficar em loading infinito ou apresentar ecrãs vazios no Android Auto. Em 2026-09-04, um maintainer ReVanced afirmou na própria issue que a pré-release mais recente do ReVanced GmsCore deverá funcionar e pediu que falhas persistentes sejam reportadas na issue oficial ainda aberta. Isto é orientação upstream, mas não prova uma correção universal: existem relatos anteriores de workarounds com GmsCore de terceiros que funcionaram apenas parcialmente ou deixaram de funcionar, e esses builds não são recomendados por este manual. A release oficial v0.3.13.3.250932 continua marcada como pré-release e as notas oficiais alertam para uma questão de tratamento do prefixo -user pelo patch GmsCore support.",
       "action": "Se YouTube Music falhar especificamente no Android Auto, confirmar primeiro versões de YouTube Music, patches, Manager e ReVanced GmsCore. Usar apenas releases oficiais ReVanced; se estiveres numa versão oficial anterior e o sintoma coincidir, a pré-release oficial mais recente pode ser testada como orientação upstream, mantendo as restantes variáveis constantes. Não instalar forks/test builds de terceiros, não desativar Play Protect e não forçar downgrade. Se o problema persistir com a pré-release oficial atual, preservar logs e reportar na issue oficial indicada pelo maintainer.",
       "url": "https://github.com/ReVanced/revanced-manager/issues/2962"
+    },
+    {
+      "issue": 3188,
+      "title": "Root: mount patched pode perder-se após reboot; novos relatos incluem falha ao remontar",
+      "state": "OPEN",
+      "reported": "2026-03-23",
+      "classification": "RELATADO / MÚLTIPLOS RELATOS",
+      "evidence": "Média",
+      "scope": "ReVanced Manager / root / mount / YouTube / YouTube Music",
+      "summary": "A issue oficial #3188 reúne vários relatos de instalações root em que o mount de YouTube/YouTube Music deixa de persistir após reiniciar, fazendo a app voltar ao estado stock ou exigir novo Mount no ReVanced Manager. Em 2026-09-06 surgiu novo relato em que ambas as apps desapareceram da lista e o Manager devolveu \"Failed to mount: Failed to load application info\"; esse utilizador tinha também experimentado módulos PlayIntegrityFork e HideMyApplist, por isso não é possível atribuir causalidade a esses módulos nem generalizar esse sintoma. Existe uma PR oficial aberta (#3469) que propõe alterações ao script de mount, mas não está merged e não constitui fix confirmado.",
+      "action": "Em instalação root, se a app patched deixar de estar montada após reboot, confirma primeiro se a versão stock instalada corresponde à versão esperada e se os módulos de mount continuam ativos. Se o botão Mount ainda funcionar, usa-o apenas como teste temporário e confirma o resultado depois de force-stop/reabrir a app. Se aparecer \"Failed to mount\" ou a app desaparecer, recolhe logs do Manager, do módulo/root framework e do script de mount antes de alterar módulos. Não instalar módulos de terceiros nem assumir a PR #3469 como correção oficial enquanto não for aceite upstream.",
+      "url": "https://github.com/ReVanced/revanced-manager/issues/3188"
     }
   ]
 };
