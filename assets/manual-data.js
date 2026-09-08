@@ -525,6 +525,18 @@ window.MANUAL_DATA = {
       "name": "ReVanced Manager issue #3188 — root mount perdido após reboot/remover Manager",
       "url": "https://github.com/ReVanced/revanced-manager/issues/3188",
       "kind": "Issue oficial"
+    },
+    {
+      "id": "R23",
+      "name": "ReVanced Manager issue #3471 — Android 8.0: patch termina mas instalação/exportação não fica disponível",
+      "url": "https://github.com/ReVanced/revanced-manager/issues/3471",
+      "kind": "Issue oficial"
+    },
+    {
+      "id": "R24",
+      "name": "ReVanced Manager issue #3519 — Android 8.0: Save/Install permanecem desativados após patching",
+      "url": "https://github.com/ReVanced/revanced-manager/issues/3519",
+      "kind": "Issue oficial"
     }
   ],
   "currentReports": [
@@ -827,6 +839,18 @@ window.MANUAL_DATA = {
       "summary": "A issue oficial #3188 reúne vários relatos de instalações root em que o mount de YouTube/YouTube Music deixa de persistir após reiniciar, fazendo a app voltar ao estado stock ou exigir novo Mount no ReVanced Manager. Em 2026-09-06 surgiu novo relato em que ambas as apps desapareceram da lista e o Manager devolveu \"Failed to mount: Failed to load application info\"; esse utilizador tinha também experimentado módulos PlayIntegrityFork e HideMyApplist, por isso não é possível atribuir causalidade a esses módulos nem generalizar esse sintoma. Existe uma PR oficial aberta (#3469) que propõe alterações ao script de mount, mas não está merged e não constitui fix confirmado.",
       "action": "Em instalação root, se a app patched deixar de estar montada após reboot, confirma primeiro se a versão stock instalada corresponde à versão esperada e se os módulos de mount continuam ativos. Se o botão Mount ainda funcionar, usa-o apenas como teste temporário e confirma o resultado depois de force-stop/reabrir a app. Se aparecer \"Failed to mount\" ou a app desaparecer, recolhe logs do Manager, do módulo/root framework e do script de mount antes de alterar módulos. Não instalar módulos de terceiros nem assumir a PR #3469 como correção oficial enquanto não for aceite upstream.",
       "url": "https://github.com/ReVanced/revanced-manager/issues/3188"
+    },
+    {
+      "issue": 3519,
+      "title": "Android 8.0: patch termina com sucesso, mas Save/Install podem ficar desativados",
+      "state": "OPEN",
+      "reported": "2026-08-25",
+      "classification": "RELATADO / MÚLTIPLOS RELATOS",
+      "evidence": "Média",
+      "scope": "ReVanced Manager 2.6.0 / Android 8.0 API 26 / Save / Install",
+      "summary": "As issues oficiais #3471 e #3519 descrevem o mesmo padrão em dois dispositivos Android 8.0/API 26 diferentes: o patching do YouTube termina sem erro fatal e chega ao fim, mas os controlos para guardar/instalar o APK não ficam utilizáveis. #3519 compara o mesmo APK/patches num Samsung A25, onde os botões ativam normalmente, com um Huawei MediaPad M5 Lite Android 8.0, onde permanecem desativados. Em #3471, outro utilizador num LG V20 Android 8.0 reportou comportamento equivalente. Não existe ainda causa upstream confirmada nem fix oficial; a versão do APK alvo e as limitações de Android 8 continuam variáveis relevantes.",
+      "action": "Se o patch terminar com sucesso em Android 8.0 mas Save/Install permanecerem desativados, não assumes que o APK foi instalado nem que existe um fix confirmado. Regista Manager 2.6.0 ou a versão usada, Android/API, APK alvo, arquitetura e logs; confirma que o APK alvo suporta API 26 e mantém as restantes variáveis constantes. Não forces a instalação a partir de diretórios privados/temporários do Manager e não recomendes uma versão de YouTube que exija Android superior apenas para contornar o sintoma. Se reproduzível, acrescenta logs à issue oficial existente em vez de abrir duplicado.",
+      "url": "https://github.com/ReVanced/revanced-manager/issues/3519"
     }
   ]
 };
