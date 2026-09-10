@@ -6,7 +6,7 @@ window.MANUAL_DATA = {
     "reviewed": "2026-09-01 20:22 Europe/Lisbon",
     "language": "pt-PT",
     "disclaimer": "Edição técnica independente, não afiliada ao projeto ReVanced, Google ou YouTube.",
-    "lastIssueCheck": "2026-09-06T21:39:00+01:00"
+    "lastIssueCheck": "2026-09-10T20:47:00+01:00"
   },
   "chapters": [
     {
@@ -537,6 +537,18 @@ window.MANUAL_DATA = {
       "name": "ReVanced Manager issue #3519 — Android 8.0: Save/Install permanecem desativados após patching",
       "url": "https://github.com/ReVanced/revanced-manager/issues/3519",
       "kind": "Issue oficial"
+    },
+    {
+      "id": "R25",
+      "name": "ReVanced Patcher issue #446 — Android 17: background audio hardening pode silenciar playback em background",
+      "url": "https://github.com/ReVanced/revanced-patcher/issues/446",
+      "kind": "Issue oficial"
+    },
+    {
+      "id": "R26",
+      "name": "Android Developers — Android 17 Background audio hardening",
+      "url": "https://developer.android.com/about/versions/17/changes/bg-audio",
+      "kind": "Documentação oficial Android"
     }
   ],
   "currentReports": [
@@ -851,6 +863,18 @@ window.MANUAL_DATA = {
       "summary": "As issues oficiais #3471 e #3519 descrevem o mesmo padrão em dois dispositivos Android 8.0/API 26 diferentes: o patching do YouTube termina sem erro fatal e chega ao fim, mas os controlos para guardar/instalar o APK não ficam utilizáveis. #3519 compara o mesmo APK/patches num Samsung A25, onde os botões ativam normalmente, com um Huawei MediaPad M5 Lite Android 8.0, onde permanecem desativados. Em #3471, outro utilizador num LG V20 Android 8.0 reportou comportamento equivalente. Não existe ainda causa upstream confirmada nem fix oficial; a versão do APK alvo e as limitações de Android 8 continuam variáveis relevantes.",
       "action": "Se o patch terminar com sucesso em Android 8.0 mas Save/Install permanecerem desativados, não assumes que o APK foi instalado nem que existe um fix confirmado. Regista Manager 2.6.0 ou a versão usada, Android/API, APK alvo, arquitetura e logs; confirma que o APK alvo suporta API 26 e mantém as restantes variáveis constantes. Não forces a instalação a partir de diretórios privados/temporários do Manager e não recomendes uma versão de YouTube que exija Android superior apenas para contornar o sintoma. Se reproduzível, acrescenta logs à issue oficial existente em vez de abrir duplicado.",
       "url": "https://github.com/ReVanced/revanced-manager/issues/3519"
+    },
+    {
+      "issue": 446,
+      "title": "Android 17: áudio em background pode parar após bloquear o ecrã ou mudar de app",
+      "state": "OPEN",
+      "reported": "2026-06-17",
+      "classification": "RELATADO / EVIDÊNCIA TÉCNICA",
+      "evidence": "Média",
+      "scope": "YouTube / Android 17 / background playback / AudioHardening",
+      "summary": "A issue oficial ReVanced Patcher #446 relata que, em Android 17, o áudio do YouTube patched pode ser silenciado cerca de 10–30 s depois de bloquear o ecrã ou mudar de app, enquanto o vídeo continua. O log publicado contém `AudioHardening ... level: partial`, que a documentação oficial Android 17 define como uma app sem foreground service ativo para essa interação de áudio. O Android 17 aplica estas restrições a todas as apps que fazem interações de áudio em background, independentemente do target API; isto sustenta tecnicamente o mecanismo do sintoma, mas continua a existir apenas um relatório ReVanced e não há correção upstream confirmada.",
+      "action": "Se o sintoma surgir apenas em Android 17, confirmar primeiro que background playback está ativo na build e reproduzir o mesmo conteúdo em foreground e depois com ecrã bloqueado/app em background. Recolher logcat ou `adb dumpsys audio` e procurar entradas `AudioHardening` com o package patched. Não desativar permanentemente o hardening do sistema como workaround: os comandos ADB documentados pela Google servem para teste de compatibilidade e alteram uma proteção global. Preservar versões do Android, YouTube, Manager e patches e anexar logs à issue oficial. A correção adequada deve vir da app/patches a cumprir o ciclo de vida/foreground service exigido pelo Android 17.",
+      "url": "https://github.com/ReVanced/revanced-patcher/issues/446"
     }
   ]
 };
