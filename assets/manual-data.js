@@ -549,6 +549,12 @@ window.MANUAL_DATA = {
       "name": "Android Developers — Android 17 Background audio hardening",
       "url": "https://developer.android.com/about/versions/17/changes/bg-audio",
       "kind": "Documentação oficial Android"
+    },
+    {
+      "id": "R27",
+      "name": "ReVanced GmsCore issue #382 — aviso falso de downgrade/atualização apesar de já existir GmsCore mais recente",
+      "url": "https://github.com/ReVanced/GmsCore/issues/382",
+      "kind": "Issue oficial"
     }
   ],
   "currentReports": [
@@ -875,6 +881,18 @@ window.MANUAL_DATA = {
       "summary": "A issue oficial ReVanced Patcher #446 relata que, em Android 17, o áudio do YouTube patched pode ser silenciado cerca de 10–30 s depois de bloquear o ecrã ou mudar de app, enquanto o vídeo continua. O log publicado contém `AudioHardening ... level: partial`, que a documentação oficial Android 17 define como uma app sem foreground service ativo para essa interação de áudio. O Android 17 aplica estas restrições a todas as apps que fazem interações de áudio em background, independentemente do target API; isto sustenta tecnicamente o mecanismo do sintoma, mas continua a existir apenas um relatório ReVanced e não há correção upstream confirmada.",
       "action": "Se o sintoma surgir apenas em Android 17, confirmar primeiro que background playback está ativo na build e reproduzir o mesmo conteúdo em foreground e depois com ecrã bloqueado/app em background. Recolher logcat ou `adb dumpsys audio` e procurar entradas `AudioHardening` com o package patched. Não desativar permanentemente o hardening do sistema como workaround: os comandos ADB documentados pela Google servem para teste de compatibilidade e alteram uma proteção global. Preservar versões do Android, YouTube, Manager e patches e anexar logs à issue oficial. A correção adequada deve vir da app/patches a cumprir o ciclo de vida/foreground service exigido pelo Android 17.",
       "url": "https://github.com/ReVanced/revanced-patcher/issues/446"
+    },
+    {
+      "issue": 382,
+      "title": "GmsCore pode mostrar um aviso de downgrade/atualização quando já está instalada uma versão oficial mais recente",
+      "state": "OPEN",
+      "reported": "2026-07-26",
+      "classification": "RELATADO / MÚLTIPLOS RELATOS",
+      "evidence": "Média",
+      "scope": "GmsCore / aviso de atualização / deteção de versão",
+      "summary": "A issue oficial GmsCore #382 relata um aviso de atualização invertido: a app patched afirma que está disponível o GmsCore 0.3.13.2.250932 quando o dispositivo já está a executar a versão mais recente 0.3.13.3.250932. Um segundo utilizador voltou a relatar o mesmo aviso em 2026-09-14. As notas oficiais da release v0.3.13.3.250932 dizem explicitamente que, se uma app patched pedir downgrade, o utilizador não tem de o fazer e pode manter essa versão. As mesmas notas referem também um problema do patch GmsCore support no tratamento do prefixo -user, mas a issue não estabelece isso como causa confirmada de todos os avisos.",
+      "action": "Não faças downgrade do GmsCore apenas porque este aviso aparece. Confirma primeiro a versão instalada e a release oficial mais recente do ReVanced GmsCore; se 0.3.13.3.250932 já estiver instalada e a app patched funcionar normalmente, segue a orientação oficial da release e mantém essa versão. Desativar a verificação de atualizações do GmsCore na app apenas suprime o aviso e obriga a verificar atualizações manualmente, por isso deve ser tratado como workaround de conveniência não confirmado e não como correção. Não reinstales nem mudes de variante sem existir um problema separado de instalação/runtime e sem manter o teste controlado.",
+      "url": "https://github.com/ReVanced/GmsCore/issues/382"
     }
   ]
 };

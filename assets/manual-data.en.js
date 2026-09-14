@@ -549,6 +549,12 @@ window.MANUAL_DATA = {
       "name": "Android Developers — Android 17 Background audio hardening",
       "url": "https://developer.android.com/about/versions/17/changes/bg-audio",
       "kind": "Official Android documentation"
+    },
+    {
+      "id": "R27",
+      "name": "ReVanced GmsCore issue #382 — false downgrade/update prompt while already on newer GmsCore",
+      "url": "https://github.com/ReVanced/GmsCore/issues/382",
+      "kind": "Official issue"
     }
   ],
   "currentReports": [
@@ -875,6 +881,18 @@ window.MANUAL_DATA = {
       "summary": "Official ReVanced Patcher issue #446 reports that on Android 17, audio from patched YouTube may be silenced roughly 10–30 s after locking the screen or switching apps while video playback continues. The published log contains `AudioHardening ... level: partial`, which the official Android 17 documentation defines as an app not running a foreground service for that audio interaction. Android 17 applies these background-audio restrictions to all apps performing such interactions regardless of target API; this technically supports the reported mechanism, but there is still only one ReVanced report and no confirmed upstream fix.",
       "action": "If the symptom appears only on Android 17, first confirm that background playback is enabled in the build and reproduce the same content in foreground, then with the screen locked/app backgrounded. Capture logcat or `adb dumpsys audio` and look for `AudioHardening` entries for the patched package. Do not permanently disable system hardening as a workaround: Google documents the ADB controls for compatibility testing and they alter a global protection. Preserve Android, YouTube, Manager and patch versions and attach logs to the official issue. The proper fix should come from the app/patches complying with the Android 17 lifecycle/foreground-service requirements.",
       "url": "https://github.com/ReVanced/revanced-patcher/issues/446"
+    },
+    {
+      "issue": 382,
+      "title": "GmsCore may show a downgrade/update warning while a newer official version is already installed",
+      "state": "OPEN",
+      "reported": "2026-07-26",
+      "classification": "REPORTED / MULTIPLE REPORTS",
+      "evidence": "Medium",
+      "scope": "GmsCore / update warning / version detection",
+      "summary": "Official GmsCore issue #382 reports an inverted update warning: the patched app says that GmsCore 0.3.13.2.250932 is available while the device is already running the newer 0.3.13.3.250932. A second user reported the same warning again on 2026-09-14. The official v0.3.13.3.250932 release notes explicitly state that if a patched app asks the user to downgrade, they do not have to and may stay on that version. Those release notes also mention a GmsCore support patch problem handling the -user prefix, but the issue does not establish that as the confirmed cause of every warning.",
+      "action": "Do not downgrade GmsCore solely because this warning appears. Verify the currently installed version and the latest official ReVanced GmsCore release first; if 0.3.13.3.250932 is already installed and the patched app otherwise works, follow the official release guidance and stay on it. Disabling the in-app GmsCore update check only suppresses the warning and requires manual update checks, so treat that as an unconfirmed convenience workaround rather than a fix. Do not reinstall or switch variants unless there is a separate installation/runtime problem and you can keep the test controlled.",
+      "url": "https://github.com/ReVanced/GmsCore/issues/382"
     }
   ]
 };
