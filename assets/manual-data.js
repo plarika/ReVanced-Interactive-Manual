@@ -573,9 +573,33 @@ window.MANUAL_DATA = {
       "name": "ReVanced Manager issue #3530 — seletor de qualidade deixa de responder após carregar a página",
       "url": "https://github.com/ReVanced/revanced-manager/issues/3530",
       "kind": "Issue oficial"
+    },
+    {
+      "id": "R31",
+      "name": "ReVanced Manager issue #3533 — abrir a descrição do vídeo pode crashar o YouTube",
+      "url": "https://github.com/ReVanced/revanced-manager/issues/3533",
+      "kind": "Issue oficial"
+    },
+    {
+      "id": "R32",
+      "name": "ReVanced Manager issue #3537 — crash ao abrir descrição do vídeo com log VerifyError",
+      "url": "https://github.com/ReVanced/revanced-manager/issues/3537",
+      "kind": "Issue oficial"
     }
   ],
   "currentReports": [
+    {
+      "issue": 3533,
+      "title": "YouTube pode crashar ao abrir a descrição do vídeo",
+      "state": "OPEN",
+      "reported": "2026-09-23",
+      "classification": "RELATADO / MÚLTIPLOS RELATOS",
+      "evidence": "Média",
+      "scope": "YouTube / descrição do vídeo / crash",
+      "summary": "A issue #3533 relata crash do YouTube ReVanced ao abrir o link Mais sob a descrição de um vídeo; um segundo utilizador relatou independentemente o mesmo sintoma e também crash ao abrir uma playlist. A issue #3537, aberta em 2026-09-30, relata independentemente o crash da descrição e inclui um trace fatal AndroidRuntime que termina em VerifyError durante a renderização da página de reprodução. Os relatos usam descrições de versão diferentes ou ambíguas, e a #3537 contém informação de versão que não é internamente consistente entre o texto do relato e o log fornecido. A evidência sustenta portanto MÚLTIPLOS RELATOS para o crash ao abrir a descrição, mas não estabelece uma versão específica do YouTube afetada, patch, causa raiz ou workaround universal.",
+      "action": "Se abrir a descrição de um vídeo fizer o YouTube crashar, registar a versão exata do APK do YouTube, versão dos patches ReVanced, Manager, Android/dispositivo e seleção de patches, e recolher logcat em torno do crash. Reproduzir primeiro na versão suportada/recomendada do YouTube com a seleção predefinida de patches antes de alterar definições. Se o trace fatal contiver VerifyError, preservar o trace completo e o patch log para comparação com os relatos upstream. Não atribuir o crash ao GmsCore, versão Android, patch específico ou versão não suportada do YouTube sem comparação controlada; alterar uma variável de cada vez.",
+      "url": "https://github.com/ReVanced/revanced-manager/issues/3533"
+    },
     {
       "issue": 3505,
       "title": "Google Photos 7.87+: app patched pode crashar no arranque",
