@@ -585,9 +585,27 @@ window.MANUAL_DATA = {
       "name": "ReVanced Manager issue #3537 — crash opening video description with VerifyError log",
       "url": "https://github.com/ReVanced/revanced-manager/issues/3537",
       "kind": "Official issue"
+    },
+    {
+      "id": "R33",
+      "name": "ReVanced Manager issue #3539 — Disable telemetry patch fails on TikTok 36.5.4",
+      "url": "https://github.com/ReVanced/revanced-manager/issues/3539",
+      "kind": "Official issue"
     }
   ],
   "currentReports": [
+    {
+      "issue": 3539,
+      "title": "TikTok 36.5.4: Disable telemetry patch can fail during patching",
+      "state": "OPEN",
+      "reported": "2026-10-02",
+      "classification": "REPORTED / TECHNICAL EVIDENCE",
+      "evidence": "Medium",
+      "scope": "TikTok / patching / Disable telemetry",
+      "summary": "Official issue #3539 reports a failure while applying Disable telemetry to TikTok 36.5.4, which the Manager log itself identifies as both the selected and suggested version. The patch log ends in PatchException: Required value was null, with the cause passing through firstMethodDeclaratively and the Disable telemetry patch AppLogInitMethod fingerprint. This is a single report with technical evidence and no upstream confirmation or second device; it therefore supports a REPORTED problem for that combination, but does not prove general incompatibility with TikTok 36.5.4 or establish a root cause. The reporter also mentions another PNG-format-related error after Disable telemetry is deselected, but the issue body does not provide equivalent evidence sufficient to treat that as a separate confirmed problem.",
+      "action": "If Disable telemetry fails on TikTok 36.5.4, preserve the complete patch log and confirm the TikTok, patches and Manager versions before changing the selection. Retry once with the predefined selection without changing other options at the same time. If the stack trace ends in Required value was null at AppLogInitMethod, attach the log to the upstream issue. Do not assume deselecting Disable telemetry is a general fix: it may only allow patching to proceed to another failure and changes the applied functionality. Do not downgrade to a non-suggested version without upstream evidence.",
+      "url": "https://github.com/ReVanced/revanced-manager/issues/3539"
+    },
     {
       "issue": 3533,
       "title": "YouTube can crash when opening the video description",

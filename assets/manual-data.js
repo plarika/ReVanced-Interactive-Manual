@@ -585,9 +585,27 @@ window.MANUAL_DATA = {
       "name": "ReVanced Manager issue #3537 — crash ao abrir descrição do vídeo com log VerifyError",
       "url": "https://github.com/ReVanced/revanced-manager/issues/3537",
       "kind": "Issue oficial"
+    },
+    {
+      "id": "R33",
+      "name": "ReVanced Manager issue #3539 — patch Disable telemetry falha no TikTok 36.5.4",
+      "url": "https://github.com/ReVanced/revanced-manager/issues/3539",
+      "kind": "Issue oficial"
     }
   ],
   "currentReports": [
+    {
+      "issue": 3539,
+      "title": "TikTok 36.5.4: patch Disable telemetry pode falhar durante o patching",
+      "state": "OPEN",
+      "reported": "2026-10-02",
+      "classification": "RELATADO / EVIDÊNCIA TÉCNICA",
+      "evidence": "Média",
+      "scope": "TikTok / patching / Disable telemetry",
+      "summary": "A issue oficial #3539 relata falha ao aplicar Disable telemetry ao TikTok 36.5.4, que o próprio log do Manager identifica como versão selecionada e sugerida. O patch log termina em PatchException: Required value was null, com a causa a passar por firstMethodDeclaratively e pelo fingerprint AppLogInitMethod do patch Disable telemetry. É um único relato com evidência técnica e sem confirmação upstream ou segundo dispositivo; por isso sustenta um problema RELATADO nessa combinação, mas não prova incompatibilidade geral do TikTok 36.5.4 nem identifica a causa raiz. O autor refere ainda outro erro relacionado com formatos PNG quando Disable telemetry é desmarcado, mas não fornece no corpo da issue evidência equivalente suficiente para o tratar como problema confirmado separado.",
+      "action": "Se Disable telemetry falhar no TikTok 36.5.4, preservar o patch log completo e confirmar versão do TikTok, patches e Manager antes de alterar a seleção. Repetir uma vez com a seleção predefinida e sem alterar simultaneamente outras opções. Se o stack trace terminar em Required value was null no AppLogInitMethod, anexar o log à issue upstream. Não assumir que desmarcar Disable telemetry é uma correção geral: pode apenas permitir avançar para outra falha e altera a funcionalidade aplicada. Não fazer downgrade para uma versão não sugerida sem evidência upstream.",
+      "url": "https://github.com/ReVanced/revanced-manager/issues/3539"
+    },
     {
       "issue": 3533,
       "title": "YouTube pode crashar ao abrir a descrição do vídeo",
